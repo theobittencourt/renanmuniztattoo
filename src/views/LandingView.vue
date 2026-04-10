@@ -33,13 +33,11 @@ onMounted(() => {
 })
 
 // ─── Portfolio items (swap src for real photos) ───────────────────────────────
+// ─── Portfolio (troque src pelos nomes reais das fotos em /public) ────────────
 const portfolio = [
-  { id: 1, src: 'https://placehold.co/600x750/111111/333333?text=Blackwork', alt: 'Tatuagem Blackwork' },
-  { id: 2, src: 'https://placehold.co/600x750/111111/333333?text=Realismo', alt: 'Tatuagem Realismo' },
-  { id: 3, src: 'https://placehold.co/600x750/111111/333333?text=Old+School', alt: 'Tatuagem Old School' },
-  { id: 4, src: 'https://placehold.co/600x750/111111/333333?text=Fineline', alt: 'Tatuagem Fineline' },
-  { id: 5, src: 'https://placehold.co/600x750/111111/333333?text=Neo+Trad', alt: 'Tatuagem Neo Traditional' },
-  { id: 6, src: 'https://placehold.co/600x750/111111/333333?text=Tribal', alt: 'Tatuagem Tribal' },
+  { id: 1, src: '/thumb1.png', alt: 'Tatuagem 1', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
+  { id: 2, src: '/thumb2.png', alt: 'Tatuagem 2', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
+  { id: 3, src: '/thumb3.png', alt: 'Tatuagem 3', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
 ]
 
 // ─── Differentials ────────────────────────────────────────────────────────────
@@ -285,34 +283,59 @@ const stats = [
     <section class="border-y border-ink-800/60 bg-ink-900/30 py-20">
       <div class="max-w-6xl mx-auto px-6">
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink-800/40 rounded-2xl overflow-hidden">
-          <div
-            v-for="(stat, i) in stats"
-            :key="i"
-            data-reveal
-            :data-delay="i * 100"
-            class="bg-ink-950 px-8 py-10 text-center hover:bg-ink-900 transition-colors group"
-          >
-            <div class="font-display text-6xl md:text-7xl text-white group-hover:text-red-500 transition-colors mb-2">
-              {{ stat.value }}
-            </div>
-            <div class="text-white font-semibold text-lg mb-1">{{ stat.label }}</div>
-            <div class="text-ink-500 text-sm">{{ stat.sub }}</div>
-          </div>
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-stretch">
 
-        <!-- Certifications badge row -->
-        <div data-reveal class="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <span
-            v-for="cert in ['Certificado em Biossegurança', 'Premiado na Convenção RJ', 'Membro da ABRATS', 'Arte Autoral']"
-            :key="cert"
-            class="inline-flex items-center gap-1.5 border border-ink-800 bg-ink-900/50 text-ink-400 text-xs font-medium px-3 py-1.5 rounded-full"
-          >
-            <svg class="w-3 h-3 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"/>
-            </svg>
-            {{ cert }}
-          </span>
+          <!-- Stats + badges -->
+          <div class="flex flex-col gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink-800/40 rounded-2xl overflow-hidden">
+              <div
+                v-for="(stat, i) in stats"
+                :key="i"
+                data-reveal
+                :data-delay="i * 100"
+                class="bg-ink-950 px-8 py-10 text-center hover:bg-ink-900 transition-colors group"
+              >
+                <div class="font-display text-6xl md:text-7xl text-white group-hover:text-red-500 transition-colors mb-2">
+                  {{ stat.value }}
+                </div>
+                <div class="text-white font-semibold text-lg mb-1">{{ stat.label }}</div>
+                <div class="text-ink-500 text-sm">{{ stat.sub }}</div>
+              </div>
+            </div>
+
+            <!-- Certifications badge row -->
+            <div data-reveal class="flex flex-wrap items-center justify-center gap-3">
+              <span
+                v-for="cert in ['Certificado em Biossegurança', 'Premiado na Convenção RJ', 'Membro da ABRATS', 'Arte Autoral']"
+                :key="cert"
+                class="inline-flex items-center gap-1.5 border border-ink-800 bg-ink-900/50 text-ink-400 text-xs font-medium px-3 py-1.5 rounded-full"
+              >
+                <svg class="w-3 h-3 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"/>
+                </svg>
+                {{ cert }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Foto do prêmio -->
+          <div data-reveal data-delay="200" class="flex justify-center lg:justify-end">
+            <div class="relative rounded-2xl overflow-hidden border border-ink-800 shadow-xl shadow-black/50 w-full max-w-xs lg:w-56 xl:w-64 shrink-0">
+              <img
+                :src="'/renanwins.png'"
+                alt="Renan Muniz recebendo prêmio"
+                class="w-full h-full object-cover"
+              />
+              <!-- Badge sobre a foto -->
+              <div class="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center gap-1.5 bg-ink-950/80 backdrop-blur-sm border border-ink-700/50 rounded-full px-3 py-1.5">
+                <svg class="w-3.5 h-3.5 text-red-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 1 12.39 7.26H19l-5.19 3.77 1.99 6.13L10 13.39l-5.8 3.77 1.99-6.13L1 7.26h6.61z" clip-rule="evenodd"/>
+                </svg>
+                <span class="text-white text-[11px] font-semibold">Premiado</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -335,26 +358,40 @@ const stats = [
         </div>
 
         <!-- Portfolio grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
           <div
             v-for="(item, i) in portfolio"
             :key="item.id"
             data-reveal
-            :data-delay="(i % 3) * 100"
-            class="portfolio-card relative rounded-xl overflow-hidden bg-ink-900 aspect-[3/4] cursor-pointer group"
+            :data-delay="i * 100"
+            class="portfolio-card relative rounded-2xl overflow-hidden bg-ink-900 aspect-[3/4] group"
           >
+            <!-- Foto -->
             <img
               :src="item.src"
               :alt="item.alt"
               class="portfolio-img w-full h-full object-cover transition-transform duration-500"
               loading="lazy"
             />
-            <!-- Hover overlay -->
-            <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent opacity-0 transition-opacity duration-300 flex items-end p-4">
-              <div>
-                <p class="text-white font-semibold text-sm">{{ item.alt }}</p>
-                <p class="text-ink-400 text-xs mt-0.5">Renan Muniz Tattoo</p>
-              </div>
+
+            <!-- Overlay gradiente no hover -->
+            <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent opacity-0 transition-opacity duration-300" />
+
+            <!-- Botão Instagram — sempre visível na parte inferior -->
+            <div class="absolute bottom-0 inset-x-0 p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <a
+                :href="item.reel"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-semibold text-sm py-2.5 rounded-xl transition-colors"
+                @click.stop
+              >
+                <!-- Instagram icon -->
+                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+                </svg>
+                Assistir reel
+              </a>
             </div>
           </div>
         </div>
