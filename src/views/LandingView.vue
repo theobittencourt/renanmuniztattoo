@@ -1,28 +1,23 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 
-// ─── Assets (dynamic binding evita resolução estática pelo Vite) ─────────────
-const HERO_PHOTO = '/renan.png'
-
-// ─── Links ──────────────────────────────────────────────────────────────────
 const WA_URL =
   'https://api.whatsapp.com/send?phone=5521976336934&text=Opa%2C%20e%20ai%20blz%20Renan%2C%20quero%20um%20or%C3%A7amento'
 const IG_URL  = 'https://www.instagram.com/renanmuniz.tattoo/'
 const MAP_URL = 'https://maps.google.com/?q=Av.+L%C3%BAcio+Meira%2C+210%2C+Teresópolis+RJ'
 
-// ─── Navbar scroll state ─────────────────────────────────────────────────────
 const scrolled = ref(false)
 function onScroll() { scrolled.value = window.scrollY > 40 }
 onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
-// ─── Scroll reveal ────────────────────────────────────────────────────────────
 onMounted(() => {
   const obs = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
-          e.target.classList.add('is-visible')
+          const delay = parseInt(e.target.dataset.delay || '0')
+          setTimeout(() => e.target.classList.add('is-revealed'), delay)
           obs.unobserve(e.target)
         }
       })
@@ -32,651 +27,623 @@ onMounted(() => {
   document.querySelectorAll('[data-reveal]').forEach((el) => obs.observe(el))
 })
 
-// ─── Portfolio items (swap src for real photos) ───────────────────────────────
-// ─── Portfolio (troque src pelos nomes reais das fotos em /public) ────────────
 const portfolio = [
-  { id: 1, src: '/thumb1.png', alt: 'Tatuagem 1', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
-  { id: 2, src: '/thumb2.png', alt: 'Tatuagem 2', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
-  { id: 3, src: '/thumb3.png', alt: 'Tatuagem 3', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
+  { src: '/thumb1.png', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
+  { src: '/thumb2.png', alt: 'Tattoo por Renan Muniz', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
+  { src: '/thumb3.png', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
 ]
 
-// ─── Differentials ────────────────────────────────────────────────────────────
-const differentials = [
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" /></svg>`,
-    title: 'Atendimento Personalizado',
-    body:  'Cada cliente é único. Ouço sua ideia com atenção e trabalho para criar uma peça que represente exatamente o que você imaginou.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" /></svg>`,
-    title: 'Criação 100% Exclusiva',
-    body:  'Nada de copiar arte de outra pessoa. Cada desenho é criado do zero, feito especialmente para você. Sua tatuagem é única no mundo.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>`,
-    title: 'Higiene e Segurança',
-    body:  'Materiais descartáveis, equipamentos esterilizados e ambiente profissional. Sua saúde é tão importante quanto a qualidade da arte.',
-  },
-  {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" /></svg>`,
-    title: 'Experiência Premiada',
-    body:  '+4 anos de estrada, 3 prêmios conquistados e centenas de clientes satisfeitos. Trabalho com dedicação em cada milímetro da sua pele.',
-  },
+const countries = [
+  '🇯🇵 Japão','🇺🇸 EUA','🇩🇪 Alemanha','🇫🇷 França','🇮🇹 Itália',
+  '🇵🇹 Portugal','🇦🇷 Argentina','🇨🇴 Colômbia','🇲🇽 México','🇪🇸 Espanha',
+  '🇳🇱 Holanda','🇬🇧 Inglaterra','🇦🇺 Austrália','🇨🇦 Canadá','🇰🇷 Coreia',
+  '🇹🇭 Tailândia','🇨🇱 Chile','🇺🇾 Uruguai','🇨🇳 China','🇧🇴 Bolívia',
 ]
 
-// ─── Process steps ────────────────────────────────────────────────────────────
 const steps = [
-  { n: '01', title: 'Manda mensagem',   body: 'Chama no WhatsApp com sua ideia — referências, estilo, tamanho, onde quer colocar.' },
-  { n: '02', title: 'Enviamos proposta', body: 'Analiso sua ideia e te envio uma proposta personalizada com valor e disponibilidade.' },
-  { n: '03', title: 'Confirmamos sessão', body: 'Com tudo alinhado, agendamos sua sessão e finalizamos os detalhes do desenho.' },
-  { n: '04', title: 'Vira arte',         body: 'Você sai do estúdio com uma obra de arte permanente na pele. Simples assim.' },
-]
-
-// ─── Stats ────────────────────────────────────────────────────────────────────
-const stats = [
-  { value: '+4',    label: 'Anos de experiência',       sub: 'Aperfeiçoando cada traço' },
-  { value: '3',     label: 'Prêmios conquistados',       sub: 'Reconhecimento da arte' },
-  { value: '100%',  label: 'Criação exclusiva',          sub: 'Nenhuma arte repetida' },
+  { n: '01', title: 'Manda mensagem',    desc: 'Chama no WhatsApp com sua ideia — referências, estilo, tamanho, onde vai colocar.' },
+  { n: '02', title: 'Recebe proposta',   desc: 'O Renan analisa tudo e te manda uma proposta personalizada com valor e agenda.' },
+  { n: '03', title: 'Confirma sessão',   desc: 'Com tudo alinhado, agenda marcada e o desenho finalizado, só vir.' },
+  { n: '04', title: 'Arte permanente',   desc: 'Você sai com uma obra de arte na pele. E uma história pra contar.' },
 ]
 </script>
 
 <template>
-  <div class="bg-ink-950 text-white min-h-screen font-sans antialiased overflow-x-hidden">
+  <div class="min-h-screen bg-[#080808] text-white overflow-x-hidden">
 
-    <!-- ═══════════════════════════════════════════════════════════
-         FLOATING WHATSAPP BUTTON — desktop only
-    ════════════════════════════════════════════════════════════════ -->
+    <!-- FLOATING WA (desktop) -->
     <a
-      :href="WA_URL"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Falar no WhatsApp"
-      class="hidden md:flex fixed bottom-7 right-7 z-50 items-center gap-3 bg-green-500 hover:bg-green-400 text-white font-semibold text-sm px-5 py-3 rounded-full shadow-xl shadow-green-950/60 transition-all duration-200 hover:scale-105 hover:shadow-green-900/70"
+      :href="WA_URL" target="_blank" rel="noopener"
+      class="hidden md:flex fixed bottom-8 right-8 z-50 items-center gap-3 bg-[#25d366] text-black font-bold px-5 py-3 rounded-full shadow-xl shadow-green-950/60 hover:scale-105 active:scale-95 transition-transform duration-200 text-sm"
     >
-      <!-- WhatsApp SVG -->
-      <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
       </svg>
-      Falar no WhatsApp
+      Agendar via WhatsApp
     </a>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         STICKY MOBILE BOTTOM CTA
-    ════════════════════════════════════════════════════════════════ -->
-    <div class="md:hidden fixed bottom-0 inset-x-0 z-50 px-4 pb-4 pt-2 bg-gradient-to-t from-ink-950 to-transparent pointer-events-none">
-      <a
-        :href="WA_URL"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="pointer-events-auto flex items-center justify-center gap-3 w-full bg-green-500 hover:bg-green-400 active:bg-green-600 text-white font-bold text-base py-4 rounded-2xl shadow-2xl shadow-green-950/70 transition-colors"
-      >
-        <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-        Agendar pelo WhatsApp
-      </a>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         NAVBAR
-    ════════════════════════════════════════════════════════════════ -->
-    <header
-      class="fixed top-0 inset-x-0 z-40 transition-all duration-300"
-      :class="scrolled ? 'bg-ink-950/90 backdrop-blur-md border-b border-ink-800/60 py-3' : 'bg-transparent py-5'"
+    <!-- MOBILE FLOATING WA (icon only, bottom-right) -->
+    <a
+      :href="WA_URL" target="_blank" rel="noopener"
+      class="md:hidden fixed bottom-6 right-5 z-50 w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-xl shadow-green-950/50 active:scale-95 transition-transform duration-200"
+      aria-label="Agendar via WhatsApp"
     >
-      <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <!-- Logo / Wordmark -->
-        <a href="#" class="flex items-center gap-2 group">
-          <span class="w-2 h-2 rounded-full bg-red-600 group-hover:bg-red-500 transition-colors animate-pulse-slow" />
-          <span class="font-display text-xl tracking-wider text-white">RENAN MUNIZ</span>
-          <span class="text-red-600 font-display text-xl tracking-wider">TATTOO</span>
-        </a>
+      <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+    </a>
 
-        <!-- Nav links — hidden on mobile -->
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-ink-400">
-          <a href="#portfolio" class="hover:text-white transition-colors">Portfólio</a>
-          <a href="#processo"  class="hover:text-white transition-colors">Como funciona</a>
-          <a href="#localizacao" class="hover:text-white transition-colors">Localização</a>
-          <a
-            :href="WA_URL"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors text-sm font-semibold"
-          >
-            Orçamento grátis
-          </a>
+    <!-- ─── NAV ─────────────────────────────────────────────────────── -->
+    <header
+      :class="[
+        'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
+        scrolled ? 'bg-[#080808]/95 backdrop-blur-md border-b border-white/5' : '',
+      ]"
+    >
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="#inicio" class="font-display text-2xl tracking-[0.25em] text-white">
+          RM<span class="text-[#e81414]">.</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-[12px] font-bold tracking-[0.2em] uppercase text-white/40">
+          <a href="#portfolio"   class="hover:text-white transition-colors duration-200">Portfólio</a>
+          <a href="#estudio"     class="hover:text-white transition-colors duration-200">Estúdio</a>
+          <a href="#processo"    class="hover:text-white transition-colors duration-200">Processo</a>
+          <a href="#localizacao" class="hover:text-white transition-colors duration-200">Localização</a>
         </nav>
+        <a
+          :href="WA_URL" target="_blank" rel="noopener"
+          class="hidden md:inline-flex items-center gap-2 border border-[#e81414] text-[#e81414] px-4 py-2 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-[#e81414] hover:text-white transition-all duration-200"
+        >
+          Agendar
+        </a>
+        <a :href="WA_URL" target="_blank" rel="noopener" class="md:hidden text-[13px] font-bold text-[#25d366] tracking-wide">
+          WhatsApp
+        </a>
       </div>
     </header>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         HERO
-    ════════════════════════════════════════════════════════════════ -->
-    <section class="relative min-h-screen flex items-center overflow-hidden">
+    <!-- ─── HERO ─────────────────────────────────────────────────────── -->
+    <section id="inicio" class="min-h-screen relative flex items-center overflow-hidden pt-20">
 
-      <!-- Background layers -->
-      <div class="absolute inset-0 bg-ink-950" />
-      <!-- Red glow anchored to the right (behind the photo) -->
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_55%_70%_at_80%_50%,rgba(220,38,38,0.13),transparent)]" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_30%_40%_at_80%_50%,rgba(220,38,38,0.07),transparent)]" />
-      <!-- Grid texture -->
-      <div
-        class="absolute inset-0 opacity-[0.025]"
-        style="background-image: linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px); background-size: 60px 60px;"
-      />
-
-      <div class="relative max-w-6xl mx-auto px-6 pt-28 pb-28 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-          <!-- ── Left col: copy ── -->
-          <div class="text-center lg:text-left order-2 lg:order-1">
-
-            <!-- Eyebrow -->
-            <div
-              data-reveal
-              class="inline-flex items-center gap-2 border border-ink-800 bg-ink-900/60 rounded-full px-4 py-1.5 text-xs font-semibold text-ink-400 uppercase tracking-widest mb-8"
-            >
-              <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-              Teresópolis, RJ — Agendamentos abertos
-            </div>
-
-            <!-- Headline -->
-            <h1
-              data-reveal
-              data-delay="100"
-              class="font-display text-[clamp(2.8rem,6vw,5.5rem)] leading-none uppercase tracking-tight mb-6"
-            >
-              Transformando<br />
-              ideias em<br />
-              tatuagens que<br />
-              são <span class="text-red-600">obras de arte.</span>
-            </h1>
-
-            <!-- Sub-headline -->
-            <p
-              data-reveal
-              data-delay="200"
-              class="text-ink-400 text-base md:text-lg max-w-sm mx-auto lg:mx-0 mb-10 leading-relaxed"
-            >
-              +4 anos de experiência &nbsp;·&nbsp; 3 prêmios<br />
-              Estúdio profissional em Teresópolis RJ
-            </p>
-
-            <!-- CTAs -->
-            <div
-              data-reveal
-              data-delay="300"
-              class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pb-24 lg:pb-0"
-            >
-              <a
-                :href="WA_URL"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2.5 bg-green-500 hover:bg-green-400 text-white font-bold px-7 py-4 rounded-xl text-base transition-all duration-200 hover:scale-105 shadow-xl shadow-green-950/50 w-full sm:w-auto justify-center"
-              >
-                <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-                Quero meu orçamento
-              </a>
-
-              <a
-                :href="IG_URL"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2.5 border border-ink-700 hover:border-ink-500 bg-ink-900/40 hover:bg-ink-900 text-white font-semibold px-7 py-4 rounded-xl text-base transition-all duration-200 w-full sm:w-auto justify-center"
-              >
-                <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-                </svg>
-                Instagram
-              </a>
-            </div>
-          </div>
-
-          <!-- ── Right col: artist photo ── -->
-          <div
-            data-reveal
-            data-delay="150"
-            class="order-1 lg:order-2 flex justify-center lg:justify-end"
-          >
-            <div class="relative">
-              <!-- Decorative red glow blob behind photo -->
-              <div class="absolute -inset-4 rounded-[2.5rem] bg-red-700/20 blur-2xl" />
-              <!-- Thin red border ring -->
-              <div class="absolute -inset-px rounded-[2rem] bg-gradient-to-br from-red-800/40 via-transparent to-transparent" />
-
-              <!-- Photo -->
-              <img
-                :src="HERO_PHOTO"
-                alt="Renan Muniz — Tatuador em Teresópolis RJ"
-                class="relative w-[260px] sm:w-[320px] lg:w-[420px] xl:w-[460px] object-cover rounded-[2rem] shadow-2xl shadow-black/70"
-                style="aspect-ratio: 1181/1331;"
-              />
-
-              <!-- Gradient fade to background at bottom (seamless blend) -->
-              <div class="absolute bottom-0 inset-x-0 h-24 rounded-b-[2rem] bg-gradient-to-t from-ink-950/60 to-transparent pointer-events-none" />
-
-              <!-- Name badge overlaid at bottom of photo -->
-              <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2.5 bg-ink-950/80 backdrop-blur-md border border-ink-800/60 rounded-full px-4 py-2 whitespace-nowrap">
-                <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse-slow shrink-0" />
-                <span class="text-white text-xs font-semibold">Renan Muniz</span>
-                <span class="text-ink-500 text-xs">· Tatuador</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
+      <!-- Kanji watermark bg -->
+      <div aria-hidden="true" class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none">
+        <span class="font-display text-[55vw] leading-none text-white/[0.018] tracking-widest">刺青</span>
       </div>
 
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-1.5 text-ink-600 text-xs animate-bounce">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m19 9-7 7-7-7" />
-        </svg>
-      </div>
-    </section>
+      <!-- Glow blobs -->
+      <div aria-hidden="true" class="absolute top-0 right-[-5%] w-[700px] h-[700px] bg-[#e81414]/7 rounded-full blur-[160px] pointer-events-none"></div>
+      <div aria-hidden="true" class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#7c3aed]/5 rounded-full blur-[140px] pointer-events-none"></div>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         SOCIAL PROOF — Stats
-    ════════════════════════════════════════════════════════════════ -->
-    <section class="border-y border-ink-800/60 bg-ink-900/30 py-20">
-      <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-20 items-center py-20">
 
-        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-stretch">
-
-          <!-- Stats + badges -->
-          <div class="flex flex-col gap-6">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-ink-800/40 rounded-2xl overflow-hidden">
-              <div
-                v-for="(stat, i) in stats"
-                :key="i"
-                data-reveal
-                :data-delay="i * 100"
-                class="bg-ink-950 px-8 py-10 text-center hover:bg-ink-900 transition-colors group"
-              >
-                <div class="font-display text-6xl md:text-7xl text-white group-hover:text-red-500 transition-colors mb-2">
-                  {{ stat.value }}
-                </div>
-                <div class="text-white font-semibold text-lg mb-1">{{ stat.label }}</div>
-                <div class="text-ink-500 text-sm">{{ stat.sub }}</div>
-              </div>
-            </div>
-
-            <!-- Certifications badge row -->
-            <div data-reveal class="flex flex-wrap items-center justify-center gap-3">
-              <span
-                v-for="cert in ['Certificado em Biossegurança', 'Premiado na Convenção RJ', 'Membro da ABRATS', 'Arte Autoral']"
-                :key="cert"
-                class="inline-flex items-center gap-1.5 border border-ink-800 bg-ink-900/50 text-ink-400 text-xs font-medium px-3 py-1.5 rounded-full"
-              >
-                <svg class="w-3 h-3 text-red-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"/>
-                </svg>
-                {{ cert }}
-              </span>
-            </div>
+        <!-- Text block -->
+        <div class="order-2 lg:order-1" data-reveal>
+          <div class="flex items-center gap-3 mb-7">
+            <div class="h-px w-10 bg-[#e81414]"></div>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Teresópolis · RJ</span>
           </div>
 
-          <!-- Foto do prêmio -->
-          <div data-reveal data-delay="200" class="flex justify-center lg:justify-end">
-            <div class="relative rounded-2xl overflow-hidden border border-ink-800 shadow-xl shadow-black/50 w-full max-w-xs lg:w-56 xl:w-64 shrink-0">
-              <img
-                :src="'/renanwins.png'"
-                alt="Renan Muniz recebendo prêmio"
-                class="w-full h-full object-cover"
-              />
-              <!-- Badge sobre a foto -->
-              <div class="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap flex items-center gap-1.5 bg-ink-950/80 backdrop-blur-sm border border-ink-700/50 rounded-full px-3 py-1.5">
-                <svg class="w-3.5 h-3.5 text-red-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 1 12.39 7.26H19l-5.19 3.77 1.99 6.13L10 13.39l-5.8 3.77 1.99-6.13L1 7.26h6.61z" clip-rule="evenodd"/>
-                </svg>
-                <span class="text-white text-[11px] font-semibold">Premiado</span>
-              </div>
-            </div>
-          </div>
+          <h1 class="font-display leading-[0.88] tracking-wide uppercase mb-8 text-[clamp(3.8rem,9.5vw,8.5rem)]">
+            De preto.<br>
+            <span class="text-[#e81414]">Tatuado.</span><br>
+            É o Renan.
+          </h1>
 
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         PORTFOLIO
-    ════════════════════════════════════════════════════════════════ -->
-    <section id="portfolio" class="py-24">
-      <div class="max-w-6xl mx-auto px-6">
-
-        <!-- Section header -->
-        <div data-reveal class="text-center mb-16">
-          <p class="text-red-600 text-xs font-bold uppercase tracking-widest mb-3">Portfólio</p>
-          <h2 class="font-display text-4xl md:text-6xl uppercase">
-            Arte que fica<br /><span class="text-ink-500">para sempre.</span>
-          </h2>
-          <p class="text-ink-400 mt-4 max-w-md mx-auto">
-            Cada peça tem uma história. Veja alguns trabalhos selecionados e imagine a sua na pele.
+          <p class="text-white/50 text-base md:text-lg leading-relaxed max-w-[430px] mb-10">
+            Tatuador premiado, viajado pelo mundo. Com um
+            <span class="text-white font-semibold">ar-condicionado com adesivo do Vegeta</span>
+            pra você aguentar a sessão inteira.
           </p>
-        </div>
 
-        <!-- Portfolio grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <div
-            v-for="(item, i) in portfolio"
-            :key="item.id"
-            data-reveal
-            :data-delay="i * 100"
-            class="portfolio-card relative rounded-2xl overflow-hidden bg-ink-900 aspect-[3/4] group"
-          >
-            <!-- Foto -->
-            <img
-              :src="item.src"
-              :alt="item.alt"
-              class="portfolio-img w-full h-full object-cover transition-transform duration-500"
-              loading="lazy"
-            />
-
-            <!-- Overlay gradiente no hover -->
-            <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent opacity-0 transition-opacity duration-300" />
-
-            <!-- Botão Instagram — sempre visível na parte inferior -->
-            <div class="absolute bottom-0 inset-x-0 p-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-              <a
-                :href="item.reel"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center justify-center gap-2 w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white font-semibold text-sm py-2.5 rounded-xl transition-colors"
-                @click.stop
-              >
-                <!-- Instagram icon -->
-                <svg class="w-4 h-4 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-                </svg>
-                Assistir reel
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- CTA below grid -->
-        <div data-reveal class="text-center mt-12">
-          <a
-            :href="IG_URL"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 border border-ink-700 hover:border-ink-500 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:bg-ink-900 text-sm"
-          >
-            Ver mais no Instagram
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         DIFFERENTIALS
-    ════════════════════════════════════════════════════════════════ -->
-    <section class="py-24 bg-ink-900/20 border-y border-ink-800/40">
-      <div class="max-w-6xl mx-auto px-6">
-
-        <div data-reveal class="text-center mb-16">
-          <p class="text-red-600 text-xs font-bold uppercase tracking-widest mb-3">Por que a Renan Muniz Tattoo?</p>
-          <h2 class="font-display text-4xl md:text-6xl uppercase">
-            Sua pele merece<br /><span class="text-red-600">o melhor.</span>
-          </h2>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div
-            v-for="(d, i) in differentials"
-            :key="i"
-            data-reveal
-            :data-delay="i * 100"
-            class="group relative border border-ink-800/60 bg-ink-950 hover:bg-ink-900 hover:border-red-900/50 rounded-2xl p-7 transition-all duration-300"
-          >
-            <!-- Top accent line -->
-            <div class="absolute top-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-red-700/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-
-            <!-- Icon -->
-            <div
-              class="w-11 h-11 rounded-xl bg-red-950/50 flex items-center justify-center text-red-500 mb-5 group-hover:bg-red-900/40 transition-colors"
-              v-html="d.icon"
-            />
-
-            <h3 class="text-white font-semibold text-lg mb-2">{{ d.title }}</h3>
-            <p class="text-ink-400 text-sm leading-relaxed">{{ d.body }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         PROCESS
-    ════════════════════════════════════════════════════════════════ -->
-    <section id="processo" class="py-24">
-      <div class="max-w-6xl mx-auto px-6">
-
-        <div data-reveal class="text-center mb-16">
-          <p class="text-red-600 text-xs font-bold uppercase tracking-widest mb-3">Simples assim</p>
-          <h2 class="font-display text-4xl md:text-6xl uppercase">
-            Como funciona
-          </h2>
-          <p class="text-ink-400 mt-4 max-w-sm mx-auto text-sm">
-            Da ideia na cabeça à arte na pele — o processo é tranquilo e transparente.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div
-            v-for="(step, i) in steps"
-            :key="i"
-            data-reveal
-            :data-delay="i * 100"
-            class="process-step relative text-center md:text-left"
-          >
-            <!-- Step number -->
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-950/60 border border-red-900/40 text-red-500 font-display text-2xl mb-5 md:mb-4">
-              {{ step.n }}
-            </div>
-            <h3 class="text-white font-semibold text-base mb-2">{{ step.title }}</h3>
-            <p class="text-ink-400 text-sm leading-relaxed">{{ step.body }}</p>
-          </div>
-        </div>
-
-        <!-- CTA after process -->
-        <div data-reveal class="mt-14 text-center">
-          <a
-            :href="WA_URL"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-2.5 bg-green-500 hover:bg-green-400 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 hover:scale-105 shadow-xl shadow-green-950/40"
-          >
-            <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            Começar agora — é grátis
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         LOCATION
-    ════════════════════════════════════════════════════════════════ -->
-    <section id="localizacao" class="py-24 border-t border-ink-800/40 bg-ink-900/20">
-      <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-
-          <!-- Text side -->
-          <div data-reveal>
-            <p class="text-red-600 text-xs font-bold uppercase tracking-widest mb-3">Onde estamos</p>
-            <h2 class="font-display text-4xl md:text-5xl uppercase mb-6">
-              Venha nos visitar
-            </h2>
-            <p class="text-ink-400 leading-relaxed mb-8">
-              Nosso estúdio está localizado no coração de Teresópolis, em um ambiente acolhedor, limpo e preparado para transformar sua ideia em realidade.
-            </p>
-
-            <!-- Address card -->
-            <div class="border border-ink-800 bg-ink-950 rounded-2xl p-6 mb-6">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 rounded-xl bg-red-950/60 flex items-center justify-center text-red-500 shrink-0 mt-0.5">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-white font-semibold mb-1">Renan Muniz Tattoo</p>
-                  <p class="text-ink-400 text-sm">Av. Lúcio Meira, 210</p>
-                  <p class="text-ink-400 text-sm">Teresópolis — RJ</p>
-                </div>
-              </div>
-            </div>
-
+          <div class="flex flex-wrap gap-3 mb-14">
             <a
-              :href="MAP_URL"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 border border-ink-700 hover:border-ink-500 bg-ink-900/40 hover:bg-ink-900 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 text-sm"
+              :href="WA_URL" target="_blank" rel="noopener"
+              class="flex items-center gap-2 bg-[#e81414] text-white font-bold px-7 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 active:scale-95 transition-all duration-200"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498 4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 0 0-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0Z" />
-              </svg>
-              Abrir no Google Maps
+              Agendar sessão
+            </a>
+            <a
+              :href="IG_URL" target="_blank" rel="noopener"
+              class="flex items-center gap-2 border border-white/15 text-white/60 font-bold px-7 py-3.5 text-[13px] uppercase tracking-widest hover:border-white/40 hover:text-white transition-all duration-200"
+            >
+              Ver portfólio
             </a>
           </div>
 
-          <!-- Map placeholder / decorative side -->
-          <div data-reveal data-delay="200">
-            <div class="relative rounded-2xl overflow-hidden border border-ink-800 bg-ink-900 aspect-square md:aspect-[4/3] flex items-center justify-center">
-              <!-- Decorative map-like grid -->
-              <div
-                class="absolute inset-0 opacity-5"
-                style="background-image: linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px); background-size: 40px 40px;"
-              />
-              <!-- Center pin -->
-              <div class="relative flex flex-col items-center gap-3 text-center px-8">
-                <div class="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-xl shadow-red-950/60">
-                  <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-2.003 3.5-4.697 3.5-8.326a8.25 8.25 0 0 0-16.5 0c0 3.629 1.556 6.326 3.5 8.326a19.579 19.579 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.144.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <p class="text-white font-semibold">Renan Muniz Tattoo</p>
-                  <p class="text-ink-500 text-sm">Av. Lúcio Meira, 210</p>
-                  <p class="text-ink-500 text-sm">Teresópolis — RJ</p>
-                </div>
-                <a
-                  :href="MAP_URL"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-xs text-red-500 hover:text-red-400 underline underline-offset-2 transition-colors mt-1"
-                >
-                  Ver no mapa →
-                </a>
+          <!-- Mini stats row -->
+          <div class="flex flex-wrap gap-10 border-t border-white/5 pt-8">
+            <div>
+              <div class="font-display text-[2.8rem] leading-none text-white">+4</div>
+              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Anos de exp.</div>
+            </div>
+            <div>
+              <div class="font-display text-[2.8rem] leading-none text-[#e81414]">3</div>
+              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Prêmios</div>
+            </div>
+            <div>
+              <div class="font-display text-[2.8rem] leading-none text-white">100%</div>
+              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Exclusivo</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Photo block -->
+        <div class="order-1 lg:order-2 relative flex justify-center" data-reveal data-delay="150">
+          <div class="relative">
+            <!-- Glow behind photo -->
+            <div class="absolute inset-0 bg-[#e81414]/15 blur-[60px] scale-90 rounded-full pointer-events-none"></div>
+
+            <!-- Photo with angled clip -->
+            <img
+              src="/renan.png"
+              alt="Renan Muniz — Tatuador em Teresópolis RJ"
+              loading="eager"
+              class="relative z-10 w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[400px] object-cover"
+              style="clip-path: polygon(0 0, 94% 0, 100% 6%, 100% 100%, 6% 100%, 0 94%); filter: contrast(1.05);"
+            />
+
+            <!-- Bottom red bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-[3px] bg-[#e81414] z-20"></div>
+
+            <!-- Floating badge -->
+            <div class="absolute -top-4 -right-4 lg:-right-6 z-20 bg-[#e81414] text-white font-display text-[15px] leading-tight px-4 py-2.5 rotate-3 shadow-lg shadow-red-900/50 whitespace-nowrap">
+              PREMIADO ★
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll cue -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/20 text-[10px] tracking-[0.4em] uppercase select-none">
+        <span>scroll</span>
+        <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"></div>
+      </div>
+    </section>
+
+
+    <!-- ─── SOBRE O RENAN ─────────────────────────────────────────────── -->
+    <section id="sobre" class="py-20 md:py-28 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+          <!-- Left: copy -->
+          <div data-reveal>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="h-px w-10 bg-[#e81414]"></div>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Quem é o Renan</span>
+            </div>
+
+            <h2 class="font-display text-[clamp(2.8rem,5.5vw,5rem)] leading-[0.88] uppercase mb-8">
+              Gente boa.<br>
+              <span class="text-white/25">Traço</span><br>
+              que marca.
+            </h2>
+
+            <div class="space-y-5 text-white/50 leading-relaxed text-[15px]">
+              <p>
+                Renan Muniz cria cada tatuagem do zero — sem modelo pronto, sem repetição. Em mais de 4 anos de estrada acumulou 3 premiações nacionais e uma clientela que volta.
+              </p>
+              <p>
+                Fã de anime desde antes de ser tendência, viajado por vários países e com um ambiente completamente sem frescura. Você chega com uma ideia e sai com uma obra.
+              </p>
+            </div>
+
+            <a
+              :href="WA_URL" target="_blank" rel="noopener"
+              class="mt-10 inline-flex items-center gap-2 bg-[#e81414] text-white font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 transition-colors duration-200"
+            >
+              Agendar com o Renan
+            </a>
+          </div>
+
+          <!-- Right: award photo -->
+          <div class="relative" data-reveal data-delay="200">
+            <div aria-hidden="true" class="absolute inset-0 flex items-center justify-end overflow-hidden pointer-events-none">
+              <span class="font-display text-[18vw] leading-none text-[#e81414]/4 select-none">★★★</span>
+            </div>
+            <img
+              src="/renanwins.png"
+              alt="Renan Muniz premiado em competição de tatuagem"
+              loading="lazy"
+              class="relative z-10 w-full object-cover"
+              style="clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);"
+            />
+            <div class="absolute top-5 left-5 z-20 bg-[#e81414]/90 backdrop-blur text-white font-display text-xl px-4 py-2 tracking-wide">
+              ★ PREMIADO
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── PORTFÓLIO ─────────────────────────────────────────────────── -->
+    <section id="portfolio" class="py-28 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6">
+
+        <div class="flex items-end justify-between mb-12">
+          <div data-reveal>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="h-px w-10 bg-[#e81414]"></div>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Portfólio</span>
+            </div>
+            <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.88] uppercase">
+              Traços que<br>ficam pra sempre.
+            </h2>
+          </div>
+          <a
+            :href="IG_URL" target="_blank" rel="noopener"
+            class="hidden md:flex items-center gap-2 border border-white/10 text-white/40 text-[12px] font-bold px-5 py-2.5 uppercase tracking-widest hover:border-white/30 hover:text-white transition-all duration-200"
+          >
+            Ver mais →
+          </a>
+        </div>
+
+        <!-- Staggered grid: middle card shifts up -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" data-reveal>
+          <a
+            v-for="(item, i) in portfolio"
+            :key="i"
+            :href="item.reel"
+            target="_blank"
+            rel="noopener"
+            :class="[
+              'group block relative overflow-hidden bg-[#0e0e0e]',
+              i === 1 ? 'md:-mt-10' : ''
+            ]"
+          >
+            <img
+              :src="item.src"
+              :alt="item.alt"
+              loading="lazy"
+              class="w-full h-[380px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110 brightness-90"
+            />
+            <!-- Hover overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <span class="text-white font-bold text-[13px] tracking-widest uppercase flex items-center gap-2">
+                Ver no Instagram
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
+              </span>
+            </div>
+            <!-- Corner accent -->
+            <div class="absolute top-0 right-0 border-t-[36px] border-r-[36px] border-t-transparent border-r-[#e81414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+        </div>
+
+        <div class="mt-6 md:hidden">
+          <a
+            :href="IG_URL" target="_blank" rel="noopener"
+            class="flex items-center justify-center gap-2 w-full border border-white/10 text-white/40 font-bold py-3.5 text-[13px] uppercase tracking-widest hover:border-white/30 hover:text-white transition-all"
+          >
+            Ver mais no Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── O ESTÚDIO ─────────────────────────────────────────────────── -->
+    <section id="estudio" class="py-16 md:py-28 bg-[#0c0c0c] border-t border-white/5 relative overflow-hidden">
+      <!-- Purple glow (anime vibe) -->
+      <div aria-hidden="true" class="absolute bottom-0 right-0 w-72 h-72 md:w-[500px] md:h-[500px] bg-[#7c3aed]/6 rounded-full blur-[100px] md:blur-[140px] pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <div class="text-center mb-10 md:mb-16" data-reveal>
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="h-px w-10 bg-[#e81414]"></div>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">O Estúdio</span>
+            <div class="h-px w-10 bg-[#e81414]"></div>
+          </div>
+          <h2 class="font-display text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[0.88] uppercase mb-4">
+            Mais que um estúdio.
+          </h2>
+          <p class="text-white/35 max-w-sm mx-auto text-[15px] leading-relaxed">
+            O espaço do Renan tem personalidade própria. Senta, relaxa e bota o papo em dia.
+          </p>
+        </div>
+
+        <!-- 3 personality cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 md:mb-12" data-reveal>
+
+          <!-- Placas do mundo -->
+          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-white/10 transition-colors duration-300 group">
+            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">🌍</div>
+            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">Placas do mundo todo</h3>
+            <p class="text-white/40 text-sm leading-relaxed mb-5">
+              As paredes do estúdio são um mapa do que o Renan já explorou. Cada placa é uma história — e ele vai te contar cada uma delas enquanto tatua.
+            </p>
+            <!-- Mini flag scroll -->
+            <div class="overflow-hidden border-t border-white/5 pt-4">
+              <div class="flag-scroll">
+                <span v-for="c in countries" :key="c" class="text-white/25 font-semibold text-[12px] tracking-wide mr-4 shrink-0">{{ c }}</span>
+                <span v-for="c in countries" :key="'b' + c" class="text-white/25 font-semibold text-[12px] tracking-wide mr-4 shrink-0" aria-hidden="true">{{ c }}</span>
               </div>
             </div>
           </div>
 
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         FINAL CTA
-    ════════════════════════════════════════════════════════════════ -->
-    <section class="py-32 relative overflow-hidden">
-      <!-- Red glow background -->
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_50%,rgba(220,38,38,0.10),transparent)]" />
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_40%_40%_at_50%_50%,rgba(220,38,38,0.06),transparent)]" />
-
-      <div class="relative max-w-3xl mx-auto px-6 text-center">
-        <div data-reveal>
-          <p class="text-red-600 text-xs font-bold uppercase tracking-widest mb-4">Pronto para dar o próximo passo?</p>
-          <h2 class="font-display text-5xl md:text-7xl uppercase leading-none mb-6">
-            Sua ideia merece<br />
-            <span class="text-red-600">virar arte.</span>
-          </h2>
-          <p class="text-ink-400 text-lg mb-10 max-w-md mx-auto leading-relaxed">
-            Orçamento gratuito, sem compromisso. Manda a ideia no WhatsApp e vamos criar juntos.
-          </p>
-
-          <!-- Main CTA -->
-          <a
-            :href="WA_URL"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-400 text-white font-bold px-10 py-5 rounded-2xl text-lg transition-all duration-200 hover:scale-105 shadow-2xl shadow-green-950/60 mb-6"
-          >
-            <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            Quero meu orçamento agora
-          </a>
-
-          <p class="text-ink-600 text-xs">
-            Respondemos em até 1 hora · Sem compromisso
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         FOOTER
-    ════════════════════════════════════════════════════════════════ -->
-    <footer class="border-t border-ink-800/60 bg-ink-950 pb-28 md:pb-0">
-      <div class="max-w-6xl mx-auto px-6 py-12">
-
-        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
-
-          <!-- Brand -->
-          <div>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="w-2 h-2 rounded-full bg-red-600" />
-              <span class="font-display text-xl tracking-wider">RENAN MUNIZ</span>
-              <span class="text-red-600 font-display text-xl tracking-wider">TATTOO</span>
-            </div>
-            <p class="text-ink-500 text-sm max-w-xs">
-              Transformando ideias em arte permanente.<br />
-              Teresópolis, RJ.
+          <!-- Cerrote removedor -->
+          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#e81414]/25 transition-colors duration-300 group">
+            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">🪚</div>
+            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">Removedor de tatuagem</h3>
+            <p class="text-white/40 text-sm leading-relaxed mb-5">
+              Tem um cerrote no estúdio com <strong class="text-white/70">"removedor de tatuagem"</strong> escrito nele. É uma brincadeira. <em class="text-white/60">Provavelmente.</em>
             </p>
+            <div class="inline-flex items-center gap-2 border border-[#e81414]/30 text-[#e81414]/60 text-[11px] px-3 py-1.5 font-bold tracking-widest uppercase">
+              ⚠️ Não tente em casa
+            </div>
           </div>
 
-          <!-- Links -->
-          <div class="flex flex-col sm:flex-row gap-8 text-sm text-ink-400">
-            <div>
-              <p class="text-ink-600 text-xs uppercase tracking-widest font-semibold mb-3">Contato</p>
-              <a :href="WA_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-white transition-colors mb-2">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                WhatsApp
-              </a>
-              <a :href="IG_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-white transition-colors">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
-                @renanmuniz.tattoo
-              </a>
-            </div>
-
-            <div>
-              <p class="text-ink-600 text-xs uppercase tracking-widest font-semibold mb-3">Localização</p>
-              <a :href="MAP_URL" target="_blank" rel="noopener noreferrer" class="flex items-start gap-2 hover:text-white transition-colors">
-                <svg class="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                </svg>
-                <span>Av. Lúcio Meira, 210<br />Teresópolis — RJ</span>
-              </a>
+          <!-- Vegeta AC -->
+          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#7c3aed]/30 transition-colors duration-300 group">
+            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">❄️</div>
+            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">O AR do Vegeta</h3>
+            <p class="text-white/40 text-sm leading-relaxed mb-5">
+              O ar-condicionado tem um adesivo dos óculos do Vegeta. Frio, poderoso e com energia de Sayajin de Elite. Você aguenta a sessão inteirinha.
+            </p>
+            <div class="inline-flex items-center gap-2 text-[#7c3aed] text-[11px] font-bold tracking-widest uppercase">
+              ⚡ IT'S OVER 9000°C BELOW
             </div>
           </div>
         </div>
 
-        <!-- Bottom bar -->
-        <div class="mt-10 pt-6 border-t border-ink-900 flex flex-col sm:flex-row items-center justify-between gap-2 text-ink-600 text-xs">
-          <p>© {{ new Date().getFullYear() }} Renan Muniz Tattoo. Todos os direitos reservados.</p>
-          <p>Feito com arte · Teresópolis RJ</p>
+
+      </div>
+    </section>
+
+    <!-- ─── PROCESSO ──────────────────────────────────────────────────── -->
+    <section id="processo" class="py-28 relative overflow-hidden">
+      <!-- Bg text watermark -->
+      <div aria-hidden="true" class="absolute left-0 top-1/2 -translate-y-1/2 font-display text-[28vw] leading-none text-white/[0.013] select-none pointer-events-none">HOW</div>
+
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16" data-reveal>
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="h-px w-10 bg-[#e81414]"></div>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Processo</span>
+            <div class="h-px w-10 bg-[#e81414]"></div>
+          </div>
+          <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.88] uppercase">
+            Como vai funcionar.
+          </h2>
+        </div>
+
+        <!-- Steps grid with big numbers -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5" data-reveal>
+          <div
+            v-for="(step, i) in steps"
+            :key="i"
+            class="bg-[#080808] p-8 relative overflow-hidden group hover:bg-[#0d0d0d] transition-colors duration-300"
+          >
+            <!-- Ghost number bg -->
+            <div class="absolute -top-4 -left-1 font-display text-[7rem] leading-none text-white/[0.04] group-hover:text-[#e81414]/10 transition-colors duration-300 select-none">
+              {{ step.n }}
+            </div>
+            <div class="relative z-10">
+              <div class="font-display text-[3.5rem] text-[#e81414] leading-none mb-5">{{ step.n }}</div>
+              <h3 class="font-display text-xl uppercase text-white mb-3 tracking-wide">{{ step.title }}</h3>
+              <p class="text-white/35 text-sm leading-relaxed">{{ step.desc }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-10" data-reveal>
+          <a
+            :href="WA_URL" target="_blank" rel="noopener"
+            class="inline-flex items-center gap-3 bg-[#e81414] text-white font-bold px-9 py-4 text-[13px] uppercase tracking-widest hover:bg-red-700 active:scale-95 transition-all duration-200"
+          >
+            Começar agora
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── LOCALIZAÇÃO ───────────────────────────────────────────────── -->
+    <section id="localizacao" class="py-28 bg-[#0c0c0c] border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+          <div data-reveal>
+            <div class="flex items-center gap-3 mb-6">
+              <div class="h-px w-10 bg-[#e81414]"></div>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Localização</span>
+            </div>
+            <h2 class="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.88] uppercase mb-10">
+              Vem até<br>o estúdio.
+            </h2>
+
+            <div class="space-y-5 mb-10">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-[#e81414]/10 border border-[#e81414]/20 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-[#e81414]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-white font-semibold mb-0.5">Teresópolis, Rio de Janeiro</div>
+                  <div class="text-white/35 text-sm">Av. Lúcio Meira, 210 · Endereço completo via WhatsApp</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-[#e81414]/10 border border-[#e81414]/20 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-[#e81414]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-white font-semibold mb-0.5">Com hora marcada</div>
+                  <div class="text-white/35 text-sm">Atendimento personalizado, sem correria e sem fila</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+              <a
+                :href="WA_URL" target="_blank" rel="noopener"
+                class="flex items-center justify-center gap-2 bg-[#e81414] text-white font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 transition-colors"
+              >
+                Falar no WhatsApp
+              </a>
+              <a
+                :href="MAP_URL" target="_blank" rel="noopener"
+                class="flex items-center justify-center gap-2 border border-white/10 text-white/45 font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:border-white/25 hover:text-white transition-all"
+              >
+                Ver no mapa
+              </a>
+            </div>
+          </div>
+
+          <!-- Decorative map -->
+          <div class="relative" data-reveal data-delay="200">
+            <div class="aspect-[4/3] bg-[#101010] border border-white/5 relative overflow-hidden flex items-center justify-center">
+              <!-- Grid pattern -->
+              <div
+                class="absolute inset-0 opacity-[0.07]"
+                style="background-image: repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 48px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 48px);"
+              ></div>
+              <!-- Pin -->
+              <div class="relative z-10 flex flex-col items-center gap-3">
+                <div class="w-4 h-4 bg-[#e81414] rounded-full shadow-lg shadow-red-600/60 animate-pulse"></div>
+                <div class="bg-[#080808] border border-white/10 px-5 py-3 text-center">
+                  <div class="text-white font-semibold text-sm tracking-wide">Renan Muniz Tattoo</div>
+                  <div class="text-white/35 text-xs mt-0.5">Teresópolis, RJ</div>
+                </div>
+              </div>
+              <!-- Expanding rings -->
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+28px)] w-28 h-28 border border-[#e81414]/20 rounded-full animate-ping" style="animation-duration:3s;"></div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+28px)] w-44 h-44 border border-[#e81414]/10 rounded-full animate-ping" style="animation-duration:3s;animation-delay:1s;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CTA FINAL ─────────────────────────────────────────────────── -->
+    <section class="py-36 relative overflow-hidden">
+      <div aria-hidden="true" class="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <span class="font-display text-[32vw] leading-none text-[#e81414]/[0.04] select-none">RM</span>
+      </div>
+      <div aria-hidden="true" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#e81414]/5 rounded-full blur-[180px] pointer-events-none"></div>
+
+      <div class="max-w-2xl mx-auto px-6 text-center relative z-10" data-reveal>
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <div class="h-px w-10 bg-[#e81414]"></div>
+          <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Bora?</span>
+          <div class="h-px w-10 bg-[#e81414]"></div>
+        </div>
+        <h2 class="font-display text-[clamp(3rem,8vw,7rem)] leading-[0.88] uppercase mb-8">
+          Sua próxima<br>
+          <span class="text-[#e81414]">tattoo</span><br>
+          te espera.
+        </h2>
+        <p class="text-white/40 text-lg mb-12 leading-relaxed">
+          Manda uma mensagem, conta sua ideia e deixa o Renan transformar ela em arte permanente.
+        </p>
+        <a
+          :href="WA_URL" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-3 bg-[#25d366] text-black font-bold px-10 py-5 text-[15px] uppercase tracking-widest hover:bg-green-400 active:scale-95 transition-all duration-200 shadow-2xl shadow-green-950/40"
+        >
+          <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Agendar pelo WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ─────────────────────────────────────────────────────── -->
+    <footer class="border-t border-white/5 py-8">
+      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-5">
+        <div class="font-display text-xl tracking-[0.25em] text-white/50">
+          RM<span class="text-[#e81414]">.</span>
+        </div>
+        <div class="flex flex-col items-center gap-1.5">
+          <div class="text-white/20 text-xs text-center tracking-wide">
+            © {{ new Date().getFullYear() }} Renan Muniz Tattoo · Teresópolis, RJ
+          </div>
+          <a
+            href="https://landing48.com.br"
+            target="_blank"
+            rel="noopener"
+            class="text-white/15 hover:text-white/35 transition-colors duration-200 text-[10px] tracking-widest uppercase"
+          >
+            Desenvolvido por Landing48
+          </a>
+        </div>
+        <div class="flex items-center gap-6">
+          <a :href="IG_URL" target="_blank" rel="noopener" class="text-white/25 hover:text-white transition-colors text-[11px] font-bold uppercase tracking-[0.25em]">Instagram</a>
+          <a :href="WA_URL" target="_blank" rel="noopener" class="text-white/25 hover:text-[#25d366] transition-colors text-[11px] font-bold uppercase tracking-[0.25em]">WhatsApp</a>
         </div>
       </div>
     </footer>
 
   </div>
 </template>
+
+<style scoped>
+/* ── Scroll reveal ─────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Main ticker (red strip) ───────────────────────── */
+.ticker-wrap {
+  overflow: hidden;
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-move 28s linear infinite;
+  will-change: transform;
+}
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.92);
+  white-space: nowrap;
+  padding-right: 0;
+}
+@keyframes ticker-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+/* ── Flag scroll inside studio card ───────────────── */
+.flag-scroll {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: flag-move 20s linear infinite;
+  will-change: transform;
+}
+@keyframes flag-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── Countries marquee at bottom of studio ─────────── */
+.countries-strip {
+  overflow: hidden;
+}
+.countries-inner {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: countries-move 40s linear infinite;
+  will-change: transform;
+}
+@keyframes countries-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+</style>
