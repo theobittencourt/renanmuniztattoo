@@ -5,6 +5,7 @@ const WA_URL =
   'https://api.whatsapp.com/send?phone=5521976336934&text=Opa%2C%20e%20ai%20blz%20Renan%2C%20quero%20um%20or%C3%A7amento'
 const IG_URL  = 'https://www.instagram.com/renanmuniz.tattoo/'
 const MAP_URL = 'https://maps.google.com/?q=Av.+L%C3%BAcio+Meira%2C+210%2C+Teresópolis+RJ'
+const STREET_VIEW_URL = 'https://www.google.com/maps/@-22.4127215,-42.9694273,3a,75y,124.29h,90t/data=!3m5!1e1!3m3!1sU6pbERUI8lrleu9JggUHaw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DU6pbERUI8lrleu9JggUHaw%26yaw%3D124.28642?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D'
 
 const scrolled = ref(false)
 function onScroll() { scrolled.value = window.scrollY > 40 }
@@ -28,9 +29,13 @@ onMounted(() => {
 })
 
 const portfolio = [
-  { src: '/thumb1.png', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
-  { src: '/thumb2.png', alt: 'Tattoo por Renan Muniz', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
-  { src: '/thumb3.png', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
+  { src: '/thumb1.png',    alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
+  { src: '/thumb2.png',    alt: 'Tattoo por Renan Muniz', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
+  { src: '/thumb3.png',    alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
+  { src: '/fusion/1.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/2.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/3.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/4.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
 ]
 
 const countries = [
@@ -41,10 +46,11 @@ const countries = [
 ]
 
 const steps = [
-  { n: '01', title: 'Manda mensagem',    desc: 'Chama no WhatsApp com sua ideia — referências, estilo, tamanho, onde vai colocar.' },
-  { n: '02', title: 'Recebe proposta',   desc: 'O Renan analisa tudo e te manda uma proposta personalizada com valor e agenda.' },
-  { n: '03', title: 'Confirma sessão',   desc: 'Com tudo alinhado, agenda marcada e o desenho finalizado, só vir.' },
-  { n: '04', title: 'Arte permanente',   desc: 'Você sai com uma obra de arte na pele. E uma história pra contar.' },
+  { n: '01', title: 'Manda mensagem',        desc: 'Me chama no WhatsApp com o que vc pensou em fazer, tamanho e local (não precisa ser exato, somente uma noção já me adianta).' },
+  { n: '02', title: 'Orçamento',             desc: 'Após confirmar alguns dados (local, tamanho e etc) eu já te passo o orçamento final. Nada de alterações no valor e sem surpresas na hora da sessão!' },
+  { n: '03', title: 'Confirmação',           desc: 'Orçamento aprovado, é hora de marcar a data! Pedimos um pequeno sinal de confirmação e esse valor é descontado do total da tatuagem!' },
+  { n: '04', title: 'Instruções pré sessão', desc: 'Eu te passo todos os cuidados e dicas pra fazer até o dia da sessão! Isso ajuda demais a ter um bom resultado!' },
+  { n: '05', title: 'Dia da sessão',         desc: 'Chegando o grande dia eu confirmo o horário com você! No dia é só vir e tatuar!' },
 ]
 </script>
 
@@ -124,15 +130,13 @@ const steps = [
           </div>
 
           <h1 class="font-display leading-[0.88] tracking-wide uppercase mb-8 text-[clamp(3.8rem,9.5vw,8.5rem)]">
-            De preto.<br>
-            <span class="text-[#e81414]">Tatuado.</span><br>
-            É o Renan.
+            Bora fazer<br>
+            <span class="text-[#e81414]">a sua</span><br>
+            próxima tatuagem?
           </h1>
 
           <p class="text-white/50 text-base md:text-lg leading-relaxed max-w-[430px] mb-10">
-            Tatuador premiado, viajado pelo mundo. Com um
-            <span class="text-white font-semibold">ar-condicionado com adesivo do Vegeta</span>
-            pra você aguentar a sessão inteira.
+            Com <span class="text-white font-semibold">mais de 6 anos</span> dedicados 100% à tatuagem, diversos prêmios e certificados, meu compromisso é transformar a sua próxima tatuagem em uma obra de arte!
           </p>
 
           <div class="flex flex-wrap gap-3 mb-14">
@@ -153,12 +157,12 @@ const steps = [
           <!-- Mini stats row -->
           <div class="flex flex-wrap gap-10 border-t border-white/5 pt-8">
             <div>
-              <div class="font-display text-[2.8rem] leading-none text-white">+4</div>
+              <div class="font-display text-[2.8rem] leading-none text-white">+6</div>
               <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Anos de exp.</div>
             </div>
             <div>
-              <div class="font-display text-[2.8rem] leading-none text-[#e81414]">3</div>
-              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Prêmios</div>
+              <div class="font-display text-[2.8rem] leading-none text-[#e81414]">7</div>
+              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Premiações</div>
             </div>
             <div>
               <div class="font-display text-[2.8rem] leading-none text-white">100%</div>
@@ -210,7 +214,7 @@ const steps = [
           <div data-reveal>
             <div class="flex items-center gap-3 mb-6">
               <div class="h-px w-10 bg-[#e81414]"></div>
-              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Quem é o Renan</span>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Quem sou eu</span>
             </div>
 
             <h2 class="font-display text-[clamp(2.8rem,5.5vw,5rem)] leading-[0.88] uppercase mb-8">
@@ -221,10 +225,10 @@ const steps = [
 
             <div class="space-y-5 text-white/50 leading-relaxed text-[15px]">
               <p>
-                Renan Muniz cria cada tatuagem do zero — sem modelo pronto, sem repetição. Em mais de 4 anos de estrada acumulou 3 premiações nacionais e uma clientela que volta.
+                Eu larguei uma carreira em comércio exterior por amor à tatuagem. Hoje já são 6 anos vivendo de arte, <span class="text-white font-semibold">7 premiações</span> e diversos cursos e especializações com apenas um objetivo: fazer a melhor arte possível pra você!
               </p>
               <p>
-                Fã de anime desde antes de ser tendência, viajado por vários países e com um ambiente completamente sem frescura. Você chega com uma ideia e sai com uma obra.
+                Na real eu sou um nerdola viciado em anime e cinema, gosto muito de videogames e futebol. Já viajei mais de <span class="text-white font-semibold">15 países</span> e adoro conversar e passar experiências. Assunto não vai faltar na nossa sessão.
               </p>
             </div>
 
@@ -260,6 +264,7 @@ const steps = [
     <section id="portfolio" class="py-28 relative overflow-hidden">
       <div class="max-w-7xl mx-auto px-6">
 
+        <!-- Header -->
         <div class="flex items-end justify-between mb-12">
           <div data-reveal>
             <div class="flex items-center gap-3 mb-4">
@@ -278,17 +283,43 @@ const steps = [
           </a>
         </div>
 
-        <!-- Staggered grid: middle card shifts up -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" data-reveal>
+        <!-- Linha 1: 4 fotos compactas -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4" data-reveal>
           <a
-            v-for="(item, i) in portfolio"
+            v-for="(item, i) in portfolio.slice(0, 4)"
             :key="i"
+            :href="item.reel"
+            target="_blank"
+            rel="noopener"
+            class="group block relative overflow-hidden bg-[#0e0e0e]"
+          >
+            <img
+              :src="item.src"
+              :alt="item.alt"
+              loading="lazy"
+              class="w-full h-[260px] md:h-[300px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110 brightness-90"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+              <span class="text-white font-bold text-[11px] tracking-widest uppercase flex items-center gap-2">
+                Ver no Instagram
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
+              </span>
+            </div>
+            <div class="absolute top-0 right-0 border-t-[28px] border-r-[28px] border-t-transparent border-r-[#e81414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+        </div>
+
+        <!-- Linha 2: 3 fotos maiores com stagger no meio -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4" data-reveal data-delay="100">
+          <a
+            v-for="(item, i) in portfolio.slice(4)"
+            :key="'b' + i"
             :href="item.reel"
             target="_blank"
             rel="noopener"
             :class="[
               'group block relative overflow-hidden bg-[#0e0e0e]',
-              i === 1 ? 'md:-mt-10' : ''
+              i !== 1 ? 'md:mt-10' : ''
             ]"
           >
             <img
@@ -297,14 +328,12 @@ const steps = [
               loading="lazy"
               class="w-full h-[380px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110 brightness-90"
             />
-            <!-- Hover overlay -->
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
               <span class="text-white font-bold text-[13px] tracking-widest uppercase flex items-center gap-2">
                 Ver no Instagram
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
               </span>
             </div>
-            <!-- Corner accent -->
             <div class="absolute top-0 right-0 border-t-[36px] border-r-[36px] border-t-transparent border-r-[#e81414] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </a>
         </div>
@@ -337,12 +366,24 @@ const steps = [
             Mais que um estúdio.
           </h2>
           <p class="text-white/35 max-w-sm mx-auto text-[15px] leading-relaxed">
-            O espaço do Renan tem personalidade própria. Senta, relaxa e bota o papo em dia.
+            O Private Tattoo tem personalidade própria! Nada de espaço escuro e fechado. Aqui, todo mundo é bem vindo ❤
           </p>
         </div>
 
         <!-- 3 personality cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 md:mb-12" data-reveal>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" data-reveal>
+
+          <!-- Vegeta AC (primeiro, conforme pedido) -->
+          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#7c3aed]/30 transition-colors duration-300 group">
+            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">❄️</div>
+            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">O AR do Vegeta</h3>
+            <p class="text-white/40 text-sm leading-relaxed mb-5">
+              O ar-condicionado tem um adesivo dos óculos do Vegeta. Frio, poderoso e com energia de Sayajin de Elite. Você aguenta a sessão inteirinha.
+            </p>
+            <div class="inline-flex items-center gap-2 text-[#7c3aed] text-[11px] font-bold tracking-widest uppercase">
+              ⚡ IT'S OVER 9000°C BELOW
+            </div>
+          </div>
 
           <!-- Placas do mundo -->
           <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-white/10 transition-colors duration-300 group">
@@ -371,20 +412,46 @@ const steps = [
               ⚠️ Não tente em casa
             </div>
           </div>
+        </div>
 
-          <!-- Vegeta AC -->
-          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#7c3aed]/30 transition-colors duration-300 group">
-            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">❄️</div>
-            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">O AR do Vegeta</h3>
-            <p class="text-white/40 text-sm leading-relaxed mb-5">
-              O ar-condicionado tem um adesivo dos óculos do Vegeta. Frio, poderoso e com energia de Sayajin de Elite. Você aguenta a sessão inteirinha.
-            </p>
-            <div class="inline-flex items-center gap-2 text-[#7c3aed] text-[11px] font-bold tracking-widest uppercase">
-              ⚡ IT'S OVER 9000°C BELOW
+        <!-- Comodidades reais -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" data-reveal data-delay="100">
+          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
+            <span class="text-xl shrink-0">🧊</span>
+            <div>
+              <div class="text-white font-semibold text-sm mb-1">Geladeira</div>
+              <div class="text-white/35 text-xs leading-relaxed">Você pode levar sua bebida geladinha pra curtir a sessão</div>
+            </div>
+          </div>
+          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
+            <span class="text-xl shrink-0">🍽️</span>
+            <div>
+              <div class="text-white font-semibold text-sm mb-1">Microondas e utensílios</div>
+              <div class="text-white/35 text-xs leading-relaxed">Precisou fazer um lanche durante a sessão? Pode esquentar aqui. Temos todos os talheres e utensílios pra facilitar a nossa vida.</div>
+            </div>
+          </div>
+          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
+            <span class="text-xl shrink-0">☕</span>
+            <div>
+              <div class="text-white font-semibold text-sm mb-1">Cafezinho</div>
+              <div class="text-white/35 text-xs leading-relaxed">Não pode faltar durante a sessão né</div>
+            </div>
+          </div>
+          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
+            <span class="text-xl shrink-0">📺</span>
+            <div>
+              <div class="text-white font-semibold text-sm mb-1">Smart TV completa</div>
+              <div class="text-white/35 text-xs leading-relaxed">Todos os streamings e canais disponíveis. De Champions League a séries e filmes, a gente pode assistir tudo!</div>
+            </div>
+          </div>
+          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
+            <span class="text-xl shrink-0">🖼️</span>
+            <div>
+              <div class="text-white font-semibold text-sm mb-1">Decoração própria</div>
+              <div class="text-white/35 text-xs leading-relaxed">Cada cantinho tem uma história por aqui. Vem conhecer todas!</div>
             </div>
           </div>
         </div>
-
 
       </div>
     </section>
@@ -402,12 +469,13 @@ const steps = [
             <div class="h-px w-10 bg-[#e81414]"></div>
           </div>
           <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.88] uppercase">
-            Como vai funcionar.
+            Como vai funcionar?<br>
+            <span class="text-white/25">É curioso, né.</span>
           </h2>
         </div>
 
         <!-- Steps grid with big numbers -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5" data-reveal>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/5" data-reveal>
           <div
             v-for="(step, i) in steps"
             :key="i"
@@ -423,6 +491,11 @@ const steps = [
               <p class="text-white/35 text-sm leading-relaxed">{{ step.desc }}</p>
             </div>
           </div>
+        </div>
+
+        <!-- Nota importante -->
+        <div class="mt-8 border border-white/8 bg-white/[0.02] px-6 py-4 text-white/40 text-sm leading-relaxed" data-reveal>
+          <span class="text-white/70 font-semibold">Importante: </span>A arte é criada antes da sessão e mostrada no dia. Em casos específicos eu envio um dia antes da sessão.
         </div>
 
         <div class="text-center mt-10" data-reveal>
@@ -448,7 +521,7 @@ const steps = [
               <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Localização</span>
             </div>
             <h2 class="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.88] uppercase mb-10">
-              Vem até<br>o estúdio.
+              Como<br>chegar?
             </h2>
 
             <div class="space-y-5 mb-10">
@@ -461,7 +534,18 @@ const steps = [
                 </div>
                 <div>
                   <div class="text-white font-semibold mb-0.5">Teresópolis, Rio de Janeiro</div>
-                  <div class="text-white/35 text-sm">Av. Lúcio Meira, 210 · Endereço completo via WhatsApp</div>
+                  <div class="text-white/35 text-sm">Av. Lúcio Meira, 210</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-[#e81414]/10 border border-[#e81414]/20 flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-[#e81414]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="text-white font-semibold mb-0.5">Pontos de referência</div>
+                  <div class="text-white/35 text-sm leading-relaxed">Em frente ao Curso Centena e Subway, na escada entre a Clínica Sorriso Serrano e a loja "Saldão de Tere"</div>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -493,27 +577,51 @@ const steps = [
             </div>
           </div>
 
-          <!-- Decorative map -->
-          <div class="relative" data-reveal data-delay="200">
-            <div class="aspect-[4/3] bg-[#101010] border border-white/5 relative overflow-hidden flex items-center justify-center">
-              <!-- Grid pattern -->
-              <div
-                class="absolute inset-0 opacity-[0.07]"
-                style="background-image: repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 48px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 48px);"
-              ></div>
-              <!-- Pin -->
-              <div class="relative z-10 flex flex-col items-center gap-3">
-                <div class="w-4 h-4 bg-[#e81414] rounded-full shadow-lg shadow-red-600/60 animate-pulse"></div>
-                <div class="bg-[#080808] border border-white/10 px-5 py-3 text-center">
-                  <div class="text-white font-semibold text-sm tracking-wide">Renan Muniz Tattoo</div>
-                  <div class="text-white/35 text-xs mt-0.5">Teresópolis, RJ</div>
+          <!-- Foto do mapa clicável -->
+          <a
+            :href="STREET_VIEW_URL"
+            target="_blank"
+            rel="noopener"
+            class="group relative block cursor-pointer"
+            data-reveal
+            data-delay="200"
+            aria-label="Abrir no Google Maps"
+          >
+            <!-- Imagem -->
+            <img
+              src="/map.png"
+              alt="Como chegar ao Renan Muniz Tattoo — Teresópolis RJ"
+              loading="lazy"
+              class="w-full object-cover border border-white/5 transition-all duration-500 group-hover:brightness-75"
+              style="clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);"
+            />
+
+            <!-- Pin animado centralizado -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+              <!-- Anéis de pulso -->
+              <div class="relative flex items-center justify-center mb-2">
+                <div class="absolute w-14 h-14 rounded-full bg-[#e81414]/20 animate-ping" style="animation-duration:2s;"></div>
+                <div class="absolute w-8 h-8 rounded-full bg-[#e81414]/30 animate-ping" style="animation-duration:2s;animation-delay:.4s;"></div>
+                <!-- Ícone do pin -->
+                <div class="relative z-10 w-8 h-8 bg-[#e81414] rounded-full flex items-center justify-center shadow-lg shadow-red-900/60">
+                  <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
                 </div>
               </div>
-              <!-- Expanding rings -->
-              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+28px)] w-28 h-28 border border-[#e81414]/20 rounded-full animate-ping" style="animation-duration:3s;"></div>
-              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[calc(50%+28px)] w-44 h-44 border border-[#e81414]/10 rounded-full animate-ping" style="animation-duration:3s;animation-delay:1s;"></div>
+              <!-- Label que aparece no hover -->
+              <div class="bg-[#080808]/90 backdrop-blur border border-white/10 px-4 py-2 text-center translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                <div class="text-white font-semibold text-sm tracking-wide">Renan Muniz Tattoo</div>
+                <div class="text-[#e81414] text-xs mt-0.5 flex items-center justify-center gap-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  Abrir no Google Maps
+                </div>
+              </div>
             </div>
-          </div>
+
+            <!-- Borda vermelha no hover -->
+            <div class="absolute inset-0 border-2 border-[#e81414]/0 group-hover:border-[#e81414]/60 transition-all duration-300 pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);"></div>
+          </a>
         </div>
       </div>
     </section>
