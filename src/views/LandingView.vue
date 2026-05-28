@@ -38,12 +38,6 @@ const portfolio = [
   { src: '/fusion/4.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
 ]
 
-const countries = [
-  '🇯🇵 Japão','🇺🇸 EUA','🇩🇪 Alemanha','🇫🇷 França','🇮🇹 Itália',
-  '🇵🇹 Portugal','🇦🇷 Argentina','🇨🇴 Colômbia','🇲🇽 México','🇪🇸 Espanha',
-  '🇳🇱 Holanda','🇬🇧 Inglaterra','🇦🇺 Austrália','🇨🇦 Canadá','🇰🇷 Coreia',
-  '🇹🇭 Tailândia','🇨🇱 Chile','🇺🇾 Uruguai','🇨🇳 China','🇧🇴 Bolívia',
-]
 
 const steps = [
   { n: '01', title: 'Manda mensagem',        desc: 'Me chama no WhatsApp com o que vc pensou em fazer, tamanho e local (não precisa ser exato, somente uma noção já me adianta).' },
@@ -370,50 +364,6 @@ const steps = [
           </p>
         </div>
 
-        <!-- 3 personality cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4" data-reveal>
-
-          <!-- Vegeta AC (primeiro, conforme pedido) -->
-          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#7c3aed]/30 transition-colors duration-300 group">
-            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">❄️</div>
-            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">O AR do Vegeta</h3>
-            <p class="text-white/40 text-sm leading-relaxed mb-5">
-              O ar-condicionado tem um adesivo dos óculos do Vegeta. Frio, poderoso e com energia de Sayajin de Elite. Você aguenta a sessão inteirinha.
-            </p>
-            <div class="inline-flex items-center gap-2 text-[#7c3aed] text-[11px] font-bold tracking-widest uppercase">
-              ⚡ IT'S OVER 9000°C BELOW
-            </div>
-          </div>
-
-          <!-- Placas do mundo -->
-          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-white/10 transition-colors duration-300 group">
-            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">🌍</div>
-            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">Placas do mundo todo</h3>
-            <p class="text-white/40 text-sm leading-relaxed mb-5">
-              As paredes do estúdio são um mapa do que o Renan já explorou. Cada placa é uma história — e ele vai te contar cada uma delas enquanto tatua.
-            </p>
-            <!-- Mini flag scroll -->
-            <div class="overflow-hidden border-t border-white/5 pt-4">
-              <div class="flag-scroll">
-                <span v-for="c in countries" :key="c" class="text-white/25 font-semibold text-[12px] tracking-wide mr-4 shrink-0">{{ c }}</span>
-                <span v-for="c in countries" :key="'b' + c" class="text-white/25 font-semibold text-[12px] tracking-wide mr-4 shrink-0" aria-hidden="true">{{ c }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cerrote removedor -->
-          <div class="bg-[#101010] border border-white/5 p-5 md:p-8 hover:border-[#e81414]/25 transition-colors duration-300 group">
-            <div class="text-3xl md:text-4xl mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 inline-block">🪚</div>
-            <h3 class="font-display text-[1.3rem] md:text-[1.5rem] uppercase text-white mb-3 tracking-wide">Removedor de tatuagem</h3>
-            <p class="text-white/40 text-sm leading-relaxed mb-5">
-              Tem um cerrote no estúdio com <strong class="text-white/70">"removedor de tatuagem"</strong> escrito nele. É uma brincadeira. <em class="text-white/60">Provavelmente.</em>
-            </p>
-            <div class="inline-flex items-center gap-2 border border-[#e81414]/30 text-[#e81414]/60 text-[11px] px-3 py-1.5 font-bold tracking-widest uppercase">
-              ⚠️ Não tente em casa
-            </div>
-          </div>
-        </div>
-
         <!-- Comodidades reais -->
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" data-reveal data-delay="100">
           <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
@@ -726,32 +676,4 @@ const steps = [
   100% { transform: translateX(-33.333%); }
 }
 
-/* ── Flag scroll inside studio card ───────────────── */
-.flag-scroll {
-  display: flex;
-  width: max-content;
-  white-space: nowrap;
-  animation: flag-move 20s linear infinite;
-  will-change: transform;
-}
-@keyframes flag-move {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ── Countries marquee at bottom of studio ─────────── */
-.countries-strip {
-  overflow: hidden;
-}
-.countries-inner {
-  display: flex;
-  width: max-content;
-  white-space: nowrap;
-  animation: countries-move 40s linear infinite;
-  will-change: transform;
-}
-@keyframes countries-move {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
 </style>
