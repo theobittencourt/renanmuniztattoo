@@ -1,11 +1,23 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
+import LeadFormModal from '../components/LeadFormModal.vue'
+import { isEn, locale, t, toggleLocale } from '../i18n'
 
+const WA_PHONE = '5521976336934'
 const WA_URL =
   'https://api.whatsapp.com/send?phone=5521976336934&text=Opa%2C%20e%20ai%20blz%20Renan%2C%20quero%20um%20or%C3%A7amento'
 const IG_URL  = 'https://www.instagram.com/renanmuniz.tattoo/'
 const MAP_URL = 'https://maps.google.com/?q=Av.+L%C3%BAcio+Meira%2C+210%2C+Teresópolis+RJ'
 const STREET_VIEW_URL = 'https://www.google.com/maps/@-22.4127215,-42.9694273,3a,75y,124.29h,90t/data=!3m5!1e1!3m3!1sU6pbERUI8lrleu9JggUHaw!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DU6pbERUI8lrleu9JggUHaw%26yaw%3D124.28642?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D'
+
+/* Em inglês os CTAs abrem o formulário de captação de leads.
+   O botão flutuante do WhatsApp continua sendo link direto nos dois idiomas. */
+const leadOpen = ref(false)
+function onCta(e) {
+  if (!isEn.value) return
+  e.preventDefault()
+  leadOpen.value = true
+}
 
 const scrolled = ref(false)
 function onScroll() { scrolled.value = window.scrollY > 40 }
@@ -29,27 +41,21 @@ onMounted(() => {
 })
 
 const portfolio = [
-  { src: '/thumb1.png',    alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
-  { src: '/thumb2.png',    alt: 'Tattoo por Renan Muniz', reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
-  { src: '/thumb3.png',    alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
-  { src: '/fusion/1.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
-  { src: '/fusion/2.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
-  { src: '/fusion/3.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
-  { src: '/fusion/4.jpeg', alt: 'Tattoo por Renan Muniz', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
-]
-
-
-const steps = [
-  { n: '01', title: 'Manda mensagem',        desc: 'Me chama no WhatsApp com o que vc pensou em fazer, tamanho e local (não precisa ser exato, somente uma noção já me adianta).' },
-  { n: '02', title: 'Orçamento',             desc: 'Após confirmar alguns dados (local, tamanho e etc) eu já te passo o orçamento final. Nada de alterações no valor e sem surpresas na hora da sessão!' },
-  { n: '03', title: 'Confirmação',           desc: 'Orçamento aprovado, é hora de marcar a data! Pedimos um pequeno sinal de confirmação e esse valor é descontado do total da tatuagem!' },
-  { n: '04', title: 'Instruções pré sessão', desc: 'Eu te passo todos os cuidados e dicas pra fazer até o dia da sessão! Isso ajuda demais a ter um bom resultado!' },
-  { n: '05', title: 'Dia da sessão',         desc: 'Chegando o grande dia eu confirmo o horário com você! No dia é só vir e tatuar!' },
+  { src: '/thumb1.png',    reel: 'https://www.instagram.com/reel/DOrW9L9DjnT/' },
+  { src: '/thumb2.png',    reel: 'http://instagram.com/reel/DPjU425Djtk/'      },
+  { src: '/thumb3.png',    reel: 'https://www.instagram.com/reel/DS0vYJTDrwc/' },
+  { src: '/fusion/1.jpeg', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/2.jpeg', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/3.jpeg', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
+  { src: '/fusion/4.jpeg', reel: 'https://www.instagram.com/renanmuniz.tattoo/' },
 ]
 </script>
 
 <template>
   <div class="min-h-screen bg-[#080808] text-white overflow-x-hidden">
+
+    <!-- LEAD FORM (EN) -->
+    <LeadFormModal :open="leadOpen" :wa-phone="WA_PHONE" @close="leadOpen = false" />
 
     <!-- FLOATING WA (desktop) -->
     <a
@@ -59,14 +65,14 @@ const steps = [
       <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
       </svg>
-      Agendar via WhatsApp
+      {{ t.floatingWa }}
     </a>
 
     <!-- MOBILE FLOATING WA (icon only, bottom-right) -->
     <a
       :href="WA_URL" target="_blank" rel="noopener"
       class="md:hidden fixed bottom-6 right-5 z-50 w-14 h-14 bg-[#25d366] rounded-full flex items-center justify-center shadow-xl shadow-green-950/50 active:scale-95 transition-transform duration-200"
-      aria-label="Agendar via WhatsApp"
+      :aria-label="t.floatingWa"
     >
       <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
@@ -85,20 +91,41 @@ const steps = [
           RM<span class="text-[#e81414]">.</span>
         </a>
         <nav class="hidden md:flex items-center gap-8 text-[12px] font-bold tracking-[0.2em] uppercase text-white/40">
-          <a href="#portfolio"   class="hover:text-white transition-colors duration-200">Portfólio</a>
-          <a href="#estudio"     class="hover:text-white transition-colors duration-200">Estúdio</a>
-          <a href="#processo"    class="hover:text-white transition-colors duration-200">Processo</a>
-          <a href="#localizacao" class="hover:text-white transition-colors duration-200">Localização</a>
+          <a href="#portfolio"   class="hover:text-white transition-colors duration-200">{{ t.nav.portfolio }}</a>
+          <a href="#estudio"     class="hover:text-white transition-colors duration-200">{{ t.nav.studio }}</a>
+          <a href="#processo"    class="hover:text-white transition-colors duration-200">{{ t.nav.process }}</a>
+          <a href="#localizacao" class="hover:text-white transition-colors duration-200">{{ t.nav.location }}</a>
         </nav>
-        <a
-          :href="WA_URL" target="_blank" rel="noopener"
-          class="hidden md:inline-flex items-center gap-2 border border-[#e81414] text-[#e81414] px-4 py-2 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-[#e81414] hover:text-white transition-all duration-200"
-        >
-          Agendar
-        </a>
-        <a :href="WA_URL" target="_blank" rel="noopener" class="md:hidden text-[13px] font-bold text-[#25d366] tracking-wide">
-          WhatsApp
-        </a>
+
+        <div class="flex items-center gap-4 md:gap-5">
+          <!-- LANG TOGGLE -->
+          <button
+            type="button"
+            class="text-[11px] font-bold tracking-[0.18em] uppercase select-none hover:opacity-80 transition-opacity"
+            :aria-label="locale === 'pt' ? 'Switch to English' : 'Mudar para português'"
+            @click="toggleLocale"
+          >
+            <span :class="locale === 'pt' ? 'text-white' : 'text-white/30'">PT</span>
+            <span class="text-white/15 mx-1">/</span>
+            <span :class="locale === 'en' ? 'text-white' : 'text-white/30'">EN</span>
+          </button>
+
+          <a
+            :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
+            class="hidden md:inline-flex items-center gap-2 border border-[#e81414] text-[#e81414] px-4 py-2 text-[11px] font-bold tracking-[0.2em] uppercase hover:bg-[#e81414] hover:text-white transition-all duration-200"
+          >
+            {{ t.nav.cta }}
+          </a>
+          <a
+            :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
+            :class="[
+              'md:hidden text-[13px] font-bold tracking-wide',
+              isEn ? 'text-[#e81414] uppercase text-[11px] tracking-[0.2em]' : 'text-[#25d366]',
+            ]"
+          >
+            {{ t.nav.ctaMobile }}
+          </a>
+        </div>
       </div>
     </header>
 
@@ -120,47 +147,37 @@ const steps = [
         <div class="order-2 lg:order-1" data-reveal>
           <div class="flex items-center gap-3 mb-7">
             <div class="h-px w-10 bg-[#e81414]"></div>
-            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Teresópolis · RJ</span>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.hero.eyebrow }}</span>
           </div>
 
           <h1 class="font-display leading-[0.88] tracking-wide uppercase mb-8 text-[clamp(3.8rem,9.5vw,8.5rem)]">
-            Bora fazer<br>
-            <span class="text-[#e81414]">a sua</span><br>
-            próxima tatuagem?
+            {{ t.hero.title1 }}<br>
+            <span class="text-[#e81414]">{{ t.hero.title2 }}</span><br>
+            {{ t.hero.title3 }}
           </h1>
 
-          <p class="text-white/50 text-base md:text-lg leading-relaxed max-w-[430px] mb-10">
-            Com <span class="text-white font-semibold">mais de 6 anos</span> dedicados 100% à tatuagem, diversos prêmios e certificados, meu compromisso é transformar a sua próxima tatuagem em uma obra de arte!
-          </p>
+          <p class="text-white/50 text-base md:text-lg leading-relaxed max-w-[430px] mb-10" v-html="t.hero.text"></p>
 
           <div class="flex flex-wrap gap-3 mb-14">
             <a
-              :href="WA_URL" target="_blank" rel="noopener"
+              :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
               class="flex items-center gap-2 bg-[#e81414] text-white font-bold px-7 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 active:scale-95 transition-all duration-200"
             >
-              Agendar sessão
+              {{ t.hero.ctaPrimary }}
             </a>
             <a
               :href="IG_URL" target="_blank" rel="noopener"
               class="flex items-center gap-2 border border-white/15 text-white/60 font-bold px-7 py-3.5 text-[13px] uppercase tracking-widest hover:border-white/40 hover:text-white transition-all duration-200"
             >
-              Ver portfólio
+              {{ t.hero.ctaSecondary }}
             </a>
           </div>
 
           <!-- Mini stats row -->
           <div class="flex flex-wrap gap-10 border-t border-white/5 pt-8">
-            <div>
-              <div class="font-display text-[2.8rem] leading-none text-white">+6</div>
-              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Anos de exp.</div>
-            </div>
-            <div>
-              <div class="font-display text-[2.8rem] leading-none text-[#e81414]">7</div>
-              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Premiações</div>
-            </div>
-            <div>
-              <div class="font-display text-[2.8rem] leading-none text-white">100%</div>
-              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">Exclusivo</div>
+            <div v-for="(stat, i) in t.hero.stats" :key="i">
+              <div :class="['font-display text-[2.8rem] leading-none', i === 1 ? 'text-[#e81414]' : 'text-white']">{{ stat.value }}</div>
+              <div class="text-white/30 text-[11px] tracking-[0.3em] uppercase mt-1">{{ stat.label }}</div>
             </div>
           </div>
         </div>
@@ -174,7 +191,7 @@ const steps = [
             <!-- Photo with angled clip -->
             <img
               src="/renan.png"
-              alt="Renan Muniz — Tatuador em Teresópolis RJ"
+              :alt="t.hero.photoAlt"
               loading="eager"
               class="relative z-10 w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[400px] object-cover"
               style="clip-path: polygon(0 0, 94% 0, 100% 6%, 100% 100%, 6% 100%, 0 94%); filter: contrast(1.05);"
@@ -185,7 +202,7 @@ const steps = [
 
             <!-- Floating badge -->
             <div class="absolute -top-4 -right-4 lg:-right-6 z-20 bg-[#e81414] text-white font-display text-[15px] leading-tight px-4 py-2.5 rotate-3 shadow-lg shadow-red-900/50 whitespace-nowrap">
-              PREMIADO ★
+              {{ t.hero.badge }}
             </div>
           </div>
         </div>
@@ -193,11 +210,10 @@ const steps = [
 
       <!-- Scroll cue -->
       <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/20 text-[10px] tracking-[0.4em] uppercase select-none">
-        <span>scroll</span>
+        <span>{{ t.hero.scroll }}</span>
         <div class="w-px h-8 bg-gradient-to-b from-white/20 to-transparent"></div>
       </div>
     </section>
-
 
     <!-- ─── SOBRE O RENAN ─────────────────────────────────────────────── -->
     <section id="sobre" class="py-20 md:py-28 relative overflow-hidden">
@@ -208,29 +224,25 @@ const steps = [
           <div data-reveal>
             <div class="flex items-center gap-3 mb-6">
               <div class="h-px w-10 bg-[#e81414]"></div>
-              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Quem sou eu</span>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.about.eyebrow }}</span>
             </div>
 
             <h2 class="font-display text-[clamp(2.8rem,5.5vw,5rem)] leading-[0.88] uppercase mb-8">
-              Gente boa.<br>
-              <span class="text-white/25">Traço</span><br>
-              que marca.
+              {{ t.about.title1 }}<br>
+              <span class="text-white/25">{{ t.about.title2 }}</span><br>
+              {{ t.about.title3 }}
             </h2>
 
             <div class="space-y-5 text-white/50 leading-relaxed text-[15px]">
-              <p>
-                Eu larguei uma carreira em comércio exterior por amor à tatuagem. Hoje já são 6 anos vivendo de arte, <span class="text-white font-semibold">7 premiações</span> e diversos cursos e especializações com apenas um objetivo: fazer a melhor arte possível pra você!
-              </p>
-              <p>
-                Na real eu sou um nerdola viciado em anime e cinema, gosto muito de videogames e futebol. Já viajei mais de <span class="text-white font-semibold">15 países</span> e adoro conversar e passar experiências. Assunto não vai faltar na nossa sessão.
-              </p>
+              <p v-html="t.about.p1"></p>
+              <p v-html="t.about.p2"></p>
             </div>
 
             <a
-              :href="WA_URL" target="_blank" rel="noopener"
+              :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
               class="mt-10 inline-flex items-center gap-2 bg-[#e81414] text-white font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 transition-colors duration-200"
             >
-              Agendar com o Renan
+              {{ t.about.cta }}
             </a>
           </div>
 
@@ -241,13 +253,13 @@ const steps = [
             </div>
             <img
               src="/renanwins.png"
-              alt="Renan Muniz premiado em competição de tatuagem"
+              :alt="t.about.photoAlt"
               loading="lazy"
               class="relative z-10 w-full object-cover"
               style="clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);"
             />
             <div class="absolute top-5 left-5 z-20 bg-[#e81414]/90 backdrop-blur text-white font-display text-xl px-4 py-2 tracking-wide">
-              ★ PREMIADO
+              {{ t.about.badge }}
             </div>
           </div>
         </div>
@@ -263,17 +275,17 @@ const steps = [
           <div data-reveal>
             <div class="flex items-center gap-3 mb-4">
               <div class="h-px w-10 bg-[#e81414]"></div>
-              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Portfólio</span>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.portfolio.eyebrow }}</span>
             </div>
             <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.88] uppercase">
-              Traços que<br>ficam pra sempre.
+              {{ t.portfolio.title1 }}<br>{{ t.portfolio.title2 }}
             </h2>
           </div>
           <a
             :href="IG_URL" target="_blank" rel="noopener"
             class="hidden md:flex items-center gap-2 border border-white/10 text-white/40 text-[12px] font-bold px-5 py-2.5 uppercase tracking-widest hover:border-white/30 hover:text-white transition-all duration-200"
           >
-            Ver mais →
+            {{ t.portfolio.seeMore }}
           </a>
         </div>
 
@@ -289,13 +301,13 @@ const steps = [
           >
             <img
               :src="item.src"
-              :alt="item.alt"
+              :alt="t.portfolio.alt"
               loading="lazy"
               class="w-full h-[260px] md:h-[300px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110 brightness-90"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
               <span class="text-white font-bold text-[11px] tracking-widest uppercase flex items-center gap-2">
-                Ver no Instagram
+                {{ t.portfolio.hover }}
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
               </span>
             </div>
@@ -318,13 +330,13 @@ const steps = [
           >
             <img
               :src="item.src"
-              :alt="item.alt"
+              :alt="t.portfolio.alt"
               loading="lazy"
               class="w-full h-[380px] object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110 brightness-90"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
               <span class="text-white font-bold text-[13px] tracking-widest uppercase flex items-center gap-2">
-                Ver no Instagram
+                {{ t.portfolio.hover }}
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
               </span>
             </div>
@@ -337,7 +349,7 @@ const steps = [
             :href="IG_URL" target="_blank" rel="noopener"
             class="flex items-center justify-center gap-2 w-full border border-white/10 text-white/40 font-bold py-3.5 text-[13px] uppercase tracking-widest hover:border-white/30 hover:text-white transition-all"
           >
-            Ver mais no Instagram
+            {{ t.portfolio.seeMoreMobile }}
           </a>
         </div>
       </div>
@@ -353,52 +365,28 @@ const steps = [
         <div class="text-center mb-10 md:mb-16" data-reveal>
           <div class="flex items-center justify-center gap-3 mb-4">
             <div class="h-px w-10 bg-[#e81414]"></div>
-            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">O Estúdio</span>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.studio.eyebrow }}</span>
             <div class="h-px w-10 bg-[#e81414]"></div>
           </div>
           <h2 class="font-display text-[clamp(2.2rem,5.5vw,4.5rem)] leading-[0.88] uppercase mb-4">
-            Mais que um estúdio.
+            {{ t.studio.title }}
           </h2>
           <p class="text-white/35 max-w-sm mx-auto text-[15px] leading-relaxed">
-            O Private Tattoo tem personalidade própria! Nada de espaço escuro e fechado. Aqui, todo mundo é bem vindo ❤
+            {{ t.studio.text }}
           </p>
         </div>
 
         <!-- Comodidades reais -->
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3" data-reveal data-delay="100">
-          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
-            <span class="text-xl shrink-0">🧊</span>
+          <div
+            v-for="(item, i) in t.studio.amenities"
+            :key="i"
+            class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3"
+          >
+            <span class="text-xl shrink-0">{{ item.icon }}</span>
             <div>
-              <div class="text-white font-semibold text-sm mb-1">Geladeira</div>
-              <div class="text-white/35 text-xs leading-relaxed">Você pode levar sua bebida geladinha pra curtir a sessão</div>
-            </div>
-          </div>
-          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
-            <span class="text-xl shrink-0">🍽️</span>
-            <div>
-              <div class="text-white font-semibold text-sm mb-1">Microondas e utensílios</div>
-              <div class="text-white/35 text-xs leading-relaxed">Precisou fazer um lanche durante a sessão? Pode esquentar aqui. Temos todos os talheres e utensílios pra facilitar a nossa vida.</div>
-            </div>
-          </div>
-          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
-            <span class="text-xl shrink-0">☕</span>
-            <div>
-              <div class="text-white font-semibold text-sm mb-1">Cafezinho</div>
-              <div class="text-white/35 text-xs leading-relaxed">Não pode faltar durante a sessão né</div>
-            </div>
-          </div>
-          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
-            <span class="text-xl shrink-0">📺</span>
-            <div>
-              <div class="text-white font-semibold text-sm mb-1">Smart TV completa</div>
-              <div class="text-white/35 text-xs leading-relaxed">Todos os streamings e canais disponíveis. De Champions League a séries e filmes, a gente pode assistir tudo!</div>
-            </div>
-          </div>
-          <div class="bg-[#0d0d0d] border border-white/5 p-5 flex items-start gap-3">
-            <span class="text-xl shrink-0">🖼️</span>
-            <div>
-              <div class="text-white font-semibold text-sm mb-1">Decoração própria</div>
-              <div class="text-white/35 text-xs leading-relaxed">Cada cantinho tem uma história por aqui. Vem conhecer todas!</div>
+              <div class="text-white font-semibold text-sm mb-1">{{ item.title }}</div>
+              <div class="text-white/35 text-xs leading-relaxed">{{ item.desc }}</div>
             </div>
           </div>
         </div>
@@ -415,19 +403,19 @@ const steps = [
         <div class="text-center mb-16" data-reveal>
           <div class="flex items-center justify-center gap-3 mb-4">
             <div class="h-px w-10 bg-[#e81414]"></div>
-            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Processo</span>
+            <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.process.eyebrow }}</span>
             <div class="h-px w-10 bg-[#e81414]"></div>
           </div>
           <h2 class="font-display text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[0.88] uppercase">
-            Como vai funcionar?<br>
-            <span class="text-white/25">É curioso, né.</span>
+            {{ t.process.title1 }}<br>
+            <span class="text-white/25">{{ t.process.title2 }}</span>
           </h2>
         </div>
 
         <!-- Steps grid with big numbers -->
         <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-px bg-white/5" data-reveal>
           <div
-            v-for="(step, i) in steps"
+            v-for="(step, i) in t.process.steps"
             :key="i"
             class="bg-[#080808] p-8 relative overflow-hidden group hover:bg-[#0d0d0d] transition-colors duration-300"
           >
@@ -445,15 +433,15 @@ const steps = [
 
         <!-- Nota importante -->
         <div class="mt-8 border border-white/8 bg-white/[0.02] px-6 py-4 text-white/40 text-sm leading-relaxed" data-reveal>
-          <span class="text-white/70 font-semibold">Importante: </span>A arte é criada antes da sessão e mostrada no dia. Em casos específicos eu envio um dia antes da sessão.
+          <span class="text-white/70 font-semibold">{{ t.process.noteLabel }}</span>{{ t.process.noteText }}
         </div>
 
         <div class="text-center mt-10" data-reveal>
           <a
-            :href="WA_URL" target="_blank" rel="noopener"
+            :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
             class="inline-flex items-center gap-3 bg-[#e81414] text-white font-bold px-9 py-4 text-[13px] uppercase tracking-widest hover:bg-red-700 active:scale-95 transition-all duration-200"
           >
-            Começar agora
+            {{ t.process.cta }}
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
           </a>
         </div>
@@ -468,10 +456,10 @@ const steps = [
           <div data-reveal>
             <div class="flex items-center gap-3 mb-6">
               <div class="h-px w-10 bg-[#e81414]"></div>
-              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Localização</span>
+              <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.location.eyebrow }}</span>
             </div>
             <h2 class="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.88] uppercase mb-10">
-              Como<br>chegar?
+              {{ t.location.title1 }}<br>{{ t.location.title2 }}
             </h2>
 
             <div class="space-y-5 mb-10">
@@ -483,8 +471,8 @@ const steps = [
                   </svg>
                 </div>
                 <div>
-                  <div class="text-white font-semibold mb-0.5">Teresópolis, Rio de Janeiro</div>
-                  <div class="text-white/35 text-sm">Av. Lúcio Meira, 210</div>
+                  <div class="text-white font-semibold mb-0.5">{{ t.location.items[0].title }}</div>
+                  <div class="text-white/35 text-sm">{{ t.location.items[0].desc }}</div>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -494,8 +482,8 @@ const steps = [
                   </svg>
                 </div>
                 <div>
-                  <div class="text-white font-semibold mb-0.5">Pontos de referência</div>
-                  <div class="text-white/35 text-sm leading-relaxed">Em frente ao Curso Centena e Subway, na escada entre a Clínica Sorriso Serrano e a loja "Saldão de Tere"</div>
+                  <div class="text-white font-semibold mb-0.5">{{ t.location.items[1].title }}</div>
+                  <div class="text-white/35 text-sm leading-relaxed">{{ t.location.items[1].desc }}</div>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -505,24 +493,24 @@ const steps = [
                   </svg>
                 </div>
                 <div>
-                  <div class="text-white font-semibold mb-0.5">Com hora marcada</div>
-                  <div class="text-white/35 text-sm">Atendimento personalizado, sem correria e sem fila</div>
+                  <div class="text-white font-semibold mb-0.5">{{ t.location.items[2].title }}</div>
+                  <div class="text-white/35 text-sm">{{ t.location.items[2].desc }}</div>
                 </div>
               </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3">
               <a
-                :href="WA_URL" target="_blank" rel="noopener"
+                :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
                 class="flex items-center justify-center gap-2 bg-[#e81414] text-white font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:bg-red-700 transition-colors"
               >
-                Falar no WhatsApp
+                {{ t.location.ctaWa }}
               </a>
               <a
                 :href="MAP_URL" target="_blank" rel="noopener"
                 class="flex items-center justify-center gap-2 border border-white/10 text-white/45 font-bold px-6 py-3.5 text-[13px] uppercase tracking-widest hover:border-white/25 hover:text-white transition-all"
               >
-                Ver no mapa
+                {{ t.location.ctaMap }}
               </a>
             </div>
           </div>
@@ -535,12 +523,12 @@ const steps = [
             class="group relative block cursor-pointer"
             data-reveal
             data-delay="200"
-            aria-label="Abrir no Google Maps"
+            :aria-label="t.location.mapAria"
           >
             <!-- Imagem -->
             <img
               src="/map.png"
-              alt="Como chegar ao Renan Muniz Tattoo — Teresópolis RJ"
+              :alt="t.location.mapAlt"
               loading="lazy"
               class="w-full object-cover border border-white/5 transition-all duration-500 group-hover:brightness-75"
               style="clip-path: polygon(0 0, 100% 0, 100% 95%, 95% 100%, 0 100%);"
@@ -564,7 +552,7 @@ const steps = [
                 <div class="text-white font-semibold text-sm tracking-wide">Renan Muniz Tattoo</div>
                 <div class="text-[#e81414] text-xs mt-0.5 flex items-center justify-center gap-1">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                  Abrir no Google Maps
+                  {{ t.location.mapOpen }}
                 </div>
               </div>
             </div>
@@ -586,25 +574,31 @@ const steps = [
       <div class="max-w-2xl mx-auto px-6 text-center relative z-10" data-reveal>
         <div class="flex items-center justify-center gap-3 mb-6">
           <div class="h-px w-10 bg-[#e81414]"></div>
-          <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">Bora?</span>
+          <span class="text-[#e81414] text-[11px] font-bold tracking-[0.45em] uppercase">{{ t.finalCta.eyebrow }}</span>
           <div class="h-px w-10 bg-[#e81414]"></div>
         </div>
         <h2 class="font-display text-[clamp(3rem,8vw,7rem)] leading-[0.88] uppercase mb-8">
-          Sua próxima<br>
-          <span class="text-[#e81414]">tattoo</span><br>
-          te espera.
+          {{ t.finalCta.title1 }}<br>
+          <span class="text-[#e81414]">{{ t.finalCta.title2 }}</span><br>
+          {{ t.finalCta.title3 }}
         </h2>
         <p class="text-white/40 text-lg mb-12 leading-relaxed">
-          Manda uma mensagem, conta sua ideia e deixa o Renan transformar ela em arte permanente.
+          {{ t.finalCta.text }}
         </p>
         <a
-          :href="WA_URL" target="_blank" rel="noopener"
-          class="inline-flex items-center gap-3 bg-[#25d366] text-black font-bold px-10 py-5 text-[15px] uppercase tracking-widest hover:bg-green-400 active:scale-95 transition-all duration-200 shadow-2xl shadow-green-950/40"
+          :href="WA_URL" target="_blank" rel="noopener" @click="onCta"
+          :class="[
+            'inline-flex items-center gap-3 font-bold px-10 py-5 text-[15px] uppercase tracking-widest active:scale-95 transition-all duration-200 shadow-2xl',
+            isEn
+              ? 'bg-[#e81414] text-white hover:bg-red-700 shadow-red-950/40'
+              : 'bg-[#25d366] text-black hover:bg-green-400 shadow-green-950/40',
+          ]"
         >
-          <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+          <svg v-if="!isEn" class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
           </svg>
-          Agendar pelo WhatsApp
+          {{ t.finalCta.cta }}
+          <svg v-if="isEn" class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M3 12h18"/></svg>
         </a>
       </div>
     </section>
@@ -617,7 +611,7 @@ const steps = [
         </div>
         <div class="flex flex-col items-center gap-1.5">
           <div class="text-white/20 text-xs text-center tracking-wide">
-            © {{ new Date().getFullYear() }} Renan Muniz Tattoo · Teresópolis, RJ
+            © {{ new Date().getFullYear() }} {{ t.footer.rights }}
           </div>
           <a
             href="https://landing48.com.br"
@@ -625,7 +619,7 @@ const steps = [
             rel="noopener"
             class="text-white/15 hover:text-white/35 transition-colors duration-200 text-[10px] tracking-widest uppercase"
           >
-            Desenvolvido por Landing48
+            {{ t.footer.madeBy }}
           </a>
         </div>
         <div class="flex items-center gap-6">
